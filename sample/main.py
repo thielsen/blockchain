@@ -21,10 +21,15 @@ while True:
     print('Choose')
     print('1. Add a transaction')
     print('2. View blockchain')
+    print('0. Quit')
     user_choice = get_user_choice()
     if user_choice == 1:
         tx_amount = get_transaction_value()
         add_value (tx_amount, get_last_blockchain_value())
-    else:
+    elif user_choice == 2:
         print_blockchain_element()
+    elif user_choice == 0:
+        break
+    else:
+        print('Input invalid')
 print('Done')
