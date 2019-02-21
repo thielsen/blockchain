@@ -12,11 +12,10 @@ def add_transaction(recipient, sender=owner, amount=1.0):
                    'amount': amount}
     open_transactions.append(transaction)
 
-
 def mine_block():
     last_block = blockchain[-1]
     hashed_block = hash_block(last_block)
-    block = {'previous_hash': 'XYZ', 
+    block = {'previous_hash': hashed_block, 
              'index': len(blockchain),
              'transactions': open_transactions}
     blockchain.append(block)
@@ -30,12 +29,10 @@ def hash_block(block):
     return '-'.join(str([block[key] for key in block]))
 
 def verify_chain():
-    is_valid = True
-    for block_index in range(1, len(blockchain)):
-        if blockchain[block_index][0] == blockchain[block_index - 1]:
-            is_valid = True
-        else:
-            is_valid = False
-            break
-    return is_valid
+    for (index, block) in enumerate(blockchain):
+        if index == 0:
+            continue
+        if block['previous_hash'] != hash_block(blockchain[index -1]):
+            return False
+        return True
 

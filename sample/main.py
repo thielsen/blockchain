@@ -40,14 +40,17 @@ while waiting_for_input:
         print_blockchain_element()
     elif user_choice == 4:
         if len(blockchain) >= 1:
-            blockchain[0] = [2]
+            blockchain[0] = {'previous_hash': '', 
+                             'index': 0,
+                             'transactions': [{'sender': 'poorfool', 'recipient': 'badactor', 'amount': '1000'}]
+}
     elif user_choice == 0:
         waiting_for_input = False
     else:
         print('Input invalid')
-    # if not verify_chain():
-    #     print('Invalid chain')
-    #     waiting_for_input = False
+    if not verify_chain():
+        print('Invalid chain')
+        waiting_for_input = False
 else:
     print('User left')
 
