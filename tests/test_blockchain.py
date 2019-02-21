@@ -108,8 +108,17 @@ def test_proof_of_work(test_blockchain):
     test_blockchain.mine_block()
     assert test_blockchain.proof_of_work() == 207
 
+def test_create_file(test_blockchain):
+    test_blockchain.mine_block()
+    with open(test_blockchain.file_location, mode='r') as f:
+        file_content = f.readlines()
+        print(file_content[1])
+        assert file_content[0] == '[{"index": 0, "previous_hash": "", "proof": 0, "transactions": []}, {"index": 1, "previous_hash": "a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812", "proof": 267, "transactions": [{"sender": "MINED", "recipient": "Simon", "amount": 10}]}]\n'
+        assert file_content[1] == '[]'
+
+
 # def test_create_file(tmpdir):
-#     p = tmpdir.mkdir("sub").join("blockchain.txt")
+#     test_create_file
 #     test_blockchain = BlockChain()
 #     test_blockchain.mine_block()
 #     # p.write("content")
