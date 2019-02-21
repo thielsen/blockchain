@@ -7,7 +7,8 @@ class BlockChain():
         self.MINING_REWARD = 10
         self.GENESIS_BLOCK = {'previous_hash': '', 
                               'index': 0,
-                              'transactions': []
+                              'transactions': [],
+                              'proof': 0
 }
         self.blockchain = [self.GENESIS_BLOCK]
         self.open_transactions = []
@@ -30,6 +31,7 @@ class BlockChain():
     def mine_block(self):
         last_block = self.blockchain[-1]
         hashed_block = self.hash_block(last_block)
+        proof = self.proof_of_work()
         reward_transaction = {'sender': 'MINED',
                               'recipient': self.owner,
                               'amount': self.MINING_REWARD
@@ -38,7 +40,8 @@ class BlockChain():
         copied_transactions.append(reward_transaction)
         block = {'previous_hash': hashed_block, 
                 'index': len(self.blockchain),
-                'transactions': copied_transactions}
+                'transactions': copied_transactions,
+                'proof': proof}
         self.blockchain.append(block)
         self.open_transactions = []
 
