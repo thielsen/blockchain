@@ -1,11 +1,18 @@
 import functools
+from sample.blockchain import *
 
-testblock = [{'index': 0, 'previous_hash': '', 'transactions': []}, {'index': 1, 'previous_hash': '0--[]', 'transactions': [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}, {'index': 2, 'previous_hash': "1-0--[]-[{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]", 'transactions': [{'amount': 3.4, 'recipient': 'Bob', 'sender': 'Simon'}, {'amount': 3.6, 'recipient': 'Alice', 'sender': 'Simon'}, {'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}]
-tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender'] == 'Simon'] for block in testblock]
 
-output = functools.reduce(lambda x, y: x+sum(y), tx_sender, 0)
-# output = functools.reduce(lambda x, y: x+y, tx_sender)
-# amount_sent = reduce(lambda tx_sum, tx_amt: tx_sum + reduce(lambda x, y: x+y, tx_amt) if len(tx_amt) > 0 else 0, tx_sender, 0)
-output = sum(tx_sender)
-print(tx_sender)
-print(output)
+
+
+test_blockchain = BlockChain()
+data = False
+x = 0
+while data != True:
+    data = test_blockchain.valid_proof([{'amount': 10.0, 'recipient': 'Bob', 'sender': 'Simon'}] , 'b2242851cf5e7216d0bbb01ad9b6659bbca55f43c9ac3e63d0fac318b579c253', x)
+    print(data)
+    # print(x)
+    x = x + 1  
+print(x)
+
+
+

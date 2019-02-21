@@ -83,3 +83,13 @@ def test_cannot_send_if_transactions_in_queue_are_too_much(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=10.0)
     test_blockchain.add_transaction('Alice', amount=10.0)
     assert test_blockchain.open_transactions ==  [{'amount': 10.0, 'recipient': 'Bob', 'sender': 'Simon'}]
+
+def test_invalid_proof(test_blockchain):
+    assert test_blockchain.valid_proof([{'amount': 10.0, 'recipient': 'Bob', 'sender': 'Simon'}] , 'b2242851cf5e7216d0bbb01ad9b6659bbca55f43c9ac3e63d0fac318b579c253', 0) == False
+
+def test_valid_proof(test_blockchain):
+    x = 0
+    while x < 100:
+        assert test_blockchain.valid_proof([{'amount': 10.0, 'recipient': 'Bob', 'sender': 'Simon'}] , 'b2242851cf5e7216d0bbb01ad9b6659bbca55f43c9ac3e63d0fac318b579c253', x) == True
+        print (x)
+        x = x + 1
