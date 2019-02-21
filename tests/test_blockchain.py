@@ -27,7 +27,8 @@ def test_mine_block(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    assert test_blockchain.blockchain == [{'index': 0, 'previous_hash': '', 'proof': 0, 'transactions': []}, {'index': 1, 'previous_hash': 'a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812', 'proof': 267, 'transactions': [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}, {'index': 2, 'previous_hash': '5f8e32c4d742d8f6238692c4919024faf95f9b574781eb12607acd205d45e0ea', 'proof': 160, 'transactions': [{'amount': 3.4, 'recipient': 'Bob', 'sender': 'Simon'}, {'amount': 3.6, 'recipient': 'Alice', 'sender': 'Simon'}, {'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}]
+    print(test_blockchain.blockchain)
+    assert test_blockchain.blockchain == [{'index': 0, 'previous_hash': '', 'proof': 0, 'transactions': []}, {'index': 1, 'previous_hash': 'a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812', 'proof': 267, 'transactions': [OrderedDict([('sender', 'MINED'), ('recipient', 'Simon'), ('amount', 10)])]}, {'index': 2, 'previous_hash': '6caa8fd085766fb1af730b43dd1e23e37f175dae0d32d3fdcd8a0433622fcf45', 'proof': 20, 'transactions': [OrderedDict([('sender', 'Simon'), ('recipient', 'Bob'), ('amount', 3.4)]), OrderedDict([('sender', 'Simon'), ('recipient', 'Alice'), ('amount', 3.6)]), OrderedDict([('sender', 'MINED'), ('recipient', 'Simon'), ('amount', 10)])]}]
 
 def test_clear_open_transactions_after_mining(test_blockchain):
     assert test_blockchain.open_transactions == []
@@ -104,5 +105,5 @@ def test_proof_of_work(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    assert test_blockchain.proof_of_work() == 207
+    assert test_blockchain.proof_of_work() == 432
 

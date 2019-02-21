@@ -1,6 +1,7 @@
 from functools import reduce
 from hashlib import sha256
 from json import dumps
+from collections import OrderedDict
 class BlockChain():
     
     def __init__(self):
@@ -18,9 +19,8 @@ class BlockChain():
     def add_transaction(self, recipient, sender=None, amount=1.0):
         if sender is None:
             sender = self.owner
-        transaction = {'recipient': recipient,
-                    'sender': sender, 
-                    'amount': amount}
+        transaction = OrderedDict(
+            [('sender', sender), ('recipient', recipient), ('amount', amount)])
         if self.verify_transaction(transaction):
             self.open_transactions.append(transaction)
             self.participants.add(sender)
@@ -32,10 +32,8 @@ class BlockChain():
         last_block = self.blockchain[-1]
         hashed_block = self.hash_block(last_block)
         proof = self.proof_of_work()
-        reward_transaction = {'sender': 'MINED',
-                              'recipient': self.owner,
-                              'amount': self.MINING_REWARD
-        }
+        reward_transaction = OrderedDict(
+            [('sender', 'MINED'), ('recipient', self.owner), ('amount', self.MINING_REWARD)])
         copied_transactions = self.open_transactions[:]
         copied_transactions.append(reward_transaction)
         block = {'previous_hash': hashed_block, 
