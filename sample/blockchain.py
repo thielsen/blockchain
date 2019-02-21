@@ -17,9 +17,13 @@ class BlockChain():
         transaction = {'recipient': recipient,
                     'sender': sender, 
                     'amount': amount}
-        self.open_transactions.append(transaction)
-        self.participants.add(sender)
-        self.participants.add(recipient)
+        if self.verify_transaction(transaction):
+            self.open_transactions.append(transaction)
+            self.participants.add(sender)
+            self.participants.add(recipient)
+            return True
+        return False
+
 
     def mine_block(self):
         last_block = self.blockchain[-1]
@@ -66,3 +70,9 @@ class BlockChain():
                 amount_received += sum(tx)
         return amount_received - amount_sent
 
+    def verify_transaction(self, transaction):
+        sender_balance = self.get_balance(transaction['sender'])
+        if sender_balance >= transaction['amount']:
+            return True
+        else:
+            return False
