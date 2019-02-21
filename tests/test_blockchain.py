@@ -19,6 +19,9 @@ def test_mine_block():
     mine_block()
     assert blockchain == [{'index': 0, 'previous_hash': '', 'transactions': []}, {'index': 1, 'previous_hash': "[-0-,- -'-'-,- -[-]-]", 'transactions': [{'amount': 3.4, 'recipient': 'Bob', 'sender': 'Simon'}, {'amount': 3.6, 'recipient': 'Alice', 'sender': 'Simon'}]}]
 
+def test_clear_open_transactions_after_mining():
+    assert open_transactions == []
+
 def test_verify_chain():
     assert verify_chain() == True
 
