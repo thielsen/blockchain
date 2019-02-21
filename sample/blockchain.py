@@ -16,6 +16,12 @@ class BlockChain():
         self.owner = 'Simon'
         self.participants = {self.owner}
 
+    def save_data(self):
+        with open('blockchain.txt', mode='w') as f:
+            f.write(str(self.blockchain))
+            f.write('\n')
+            f.write(str(self.open_transactions))
+
     def add_transaction(self, recipient, sender=None, amount=1.0):
         if sender is None:
             sender = self.owner
@@ -25,6 +31,7 @@ class BlockChain():
             self.open_transactions.append(transaction)
             self.participants.add(sender)
             self.participants.add(recipient)
+            self.save_data()
             return True
         return False
 
@@ -41,8 +48,8 @@ class BlockChain():
                 'transactions': copied_transactions,
                 'proof': proof}
         self.blockchain.append(block)
+        self.save_data()
         self.open_transactions = []
-
 
     def get_last_blockchain_value():
         if len(blockchain) < 1:

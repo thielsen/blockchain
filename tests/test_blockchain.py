@@ -1,6 +1,7 @@
 from sample.blockchain import *
 from sample.hash_utilities import *
 import pytest
+import os
 
 @pytest.fixture
 def test_blockchain():
@@ -104,4 +105,14 @@ def test_proof_of_work(test_blockchain):
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
     assert test_blockchain.proof_of_work() == 207
+
+# def test_create_file(tmp_path):
+#     d = tmp_path / "sub"
+#     d.mkdir()
+#     p = d / "blockchain.txt"
+#     test_blockchain = BlockChain()
+#     test_blockchain.mine_block()
+#     assert p.read_text() == CONTENT
+#     assert len(list(tmp_path.iterdir())) == 1
+#     assert 0
 
