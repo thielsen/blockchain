@@ -32,10 +32,11 @@ class BlockChain():
                               'recipient': self.owner,
                               'amount': self.MINING_REWARD
         }
-        self.open_transactions.append(reward_transaction)
+        copied_transactions = self.open_transactions[:]
+        copied_transactions.append(reward_transaction)
         block = {'previous_hash': hashed_block, 
                 'index': len(self.blockchain),
-                'transactions': self.open_transactions}
+                'transactions': copied_transactions}
         self.blockchain.append(block)
         self.open_transactions = []
 
