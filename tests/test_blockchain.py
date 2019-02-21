@@ -25,7 +25,8 @@ def test_mine_block(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    assert test_blockchain.blockchain == [{'index': 0, 'previous_hash': '', 'transactions': []}, {'index': 1, 'previous_hash': '0--[]', 'transactions': [{'amount': 3.4, 'recipient': 'Bob', 'sender': 'Simon'}, {'amount': 3.6, 'recipient': 'Alice', 'sender': 'Simon'}]}]
+    print(test_blockchain.blockchain)
+    assert test_blockchain.blockchain == [{'index': 0, 'previous_hash': '', 'transactions': []}, {'index': 1, 'previous_hash': '0--[]', 'transactions': [{'amount': 3.4, 'recipient': 'Bob', 'sender': 'Simon'}, {'amount': 3.6, 'recipient': 'Alice', 'sender': 'Simon'}, {'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}]
 
 def test_clear_open_transactions_after_mining(test_blockchain):
     assert test_blockchain.open_transactions == []
@@ -56,6 +57,11 @@ def test_get_balance(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    assert test_blockchain.get_balance('Simon') == -7.0
+    assert test_blockchain.get_balance('Simon') == 3
     assert test_blockchain.get_balance('Bob') == 3.4
     assert test_blockchain.get_balance('Alice') == 3.6
+
+def test_mining_block_adds_reward(test_blockchain):
+    test_blockchain.mine_block()
+    test_blockchain.mine_block()
+    assert test_blockchain.get_balance('Simon') == 20

@@ -1,11 +1,12 @@
 class BlockChain():
     
     def __init__(self):
-        self.    genesis_block = {'previous_hash': '', 
-                 'index': 0,
-                 'transactions': []
+        self.MINING_REWARD = 10
+        self.GENESIS_BLOCK = {'previous_hash': '', 
+                              'index': 0,
+                              'transactions': []
 }
-        self.blockchain = [self.genesis_block]
+        self.blockchain = [self.GENESIS_BLOCK]
         self.open_transactions = []
         self.owner = 'Simon'
         self.participants = {self.owner}
@@ -23,6 +24,11 @@ class BlockChain():
     def mine_block(self):
         last_block = self.blockchain[-1]
         hashed_block = self.hash_block(last_block)
+        reward_transaction = {'sender': 'MINED',
+                              'recipient': self.owner,
+                              'amount': self.MINING_REWARD
+        }
+        self.open_transactions.append(reward_transaction)
         block = {'previous_hash': hashed_block, 
                 'index': len(self.blockchain),
                 'transactions': self.open_transactions}
