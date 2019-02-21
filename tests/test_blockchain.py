@@ -52,5 +52,10 @@ def test_check_participants_are_added(test_blockchain):
     test_blockchain.mine_block()
     assert test_blockchain.participants == set(['Alice', 'Bob', 'Simon'])
 
-# def test_check_balance():
-#     assert
+def test_get_balance(test_blockchain):
+    test_blockchain.add_transaction('Bob', amount=3.4)
+    test_blockchain.add_transaction('Alice', amount=3.6)
+    test_blockchain.mine_block()
+    assert test_blockchain.get_balance('Simon') == -7.0
+    assert test_blockchain.get_balance('Bob') == 3.4
+    assert test_blockchain.get_balance('Alice') == 3.6

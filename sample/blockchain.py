@@ -46,7 +46,17 @@ class BlockChain():
                 return False
         return True
 
-    def get_balance(participant):
+    def get_balance(self, participant):
         tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender'] == participant] for block in self.blockchain]
-
+        amount_sent = 0
+        for tx in tx_sender:
+            print
+            if len(tx) > 0:
+                amount_sent += sum(tx)
+        tx_recipient = [[tx['amount'] for tx in block['transactions'] if tx['recipient'] == participant] for block in self.blockchain]
+        amount_received = 0
+        for tx in tx_recipient:
+            if len(tx) > 0:
+                amount_received += sum(tx)
+        return amount_received - amount_sent
 
