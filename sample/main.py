@@ -2,9 +2,13 @@ from blockchain import add_transaction
 from blockchain import get_last_blockchain_value
 from blockchain import blockchain
 from blockchain import verify_chain
+from blockchain import mine_block
+
 
 def get_transaction_value():
-    return float(input('Transaction amount:'))
+    tx_recipient = input('Enter recipient: ')
+    tx_amount = float(input('Transaction amount: '))
+    return (tx_recipient, tx_amount)
 
 def get_user_choice():
     return int(input(' Your Choice: '))
@@ -21,25 +25,29 @@ waiting_for_input = True
 while waiting_for_input:
     print('Choose')
     print('1. Add a transaction')
-    print('2. View blockchain')
-    print('3. Manipulate blockchain')
+    print('2. Mine a new block')
+    print('3. View blockchain')
+    print('4. Manipulate blockchain')
     print('0. Quit')
     user_choice = get_user_choice()
     if user_choice == 1:
-        tx_amount = get_transaction_value()
-        add_transaction (tx_amount, get_last_blockchain_value())
+        tx_data = get_transaction_value()
+        recipient, amount = tx_data
+        add_transaction (recipient, amount=amount)
     elif user_choice == 2:
-        print_blockchain_element()
+        mine_block()
     elif user_choice == 3:
+        print_blockchain_element()
+    elif user_choice == 4:
         if len(blockchain) >= 1:
             blockchain[0] = [2]
     elif user_choice == 0:
         waiting_for_input = False
     else:
         print('Input invalid')
-    if not verify_chain():
-        print('Invalid chain')
-        waiting_for_input = False
+    # if not verify_chain():
+    #     print('Invalid chain')
+    #     waiting_for_input = False
 else:
     print('User left')
 

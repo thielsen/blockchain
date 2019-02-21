@@ -1,10 +1,31 @@
+genesis_block = {'previous_hash': '', 
+                 'index': 0,
+                 'transactions': []
+}
+blockchain = [genesis_block]
+open_transactions = []
+owner = 'Simon'
 
-blockchain = []
+def add_transaction(recipient, sender=owner, amount=1.0):
+    transaction = {'recipient': recipient,
+                   'sender': sender, 
+                   'amount': amount}
+    open_transactions.append(transaction)
 
-def add_transaction(transaction_amount, last_transaction=[1]):
-    if last_transaction == None:
-        last_transaction = [1]
-    blockchain.append([last_transaction, transaction_amount])
+
+def mine_block():
+    last_block = blockchain[-1]
+    hashed_block = ''
+    for keys in last_block:
+        value = last_block[keys]
+        hashed_block = hashed_block + str(value)
+    print(hashed_block)
+    block = {'previous_hash': 'XYZ', 
+             'index': len(blockchain),
+             'transactions': open_transactions}
+    blockchain.append(block)
+    
+
 
 def get_last_blockchain_value():
     if len(blockchain) < 1:
