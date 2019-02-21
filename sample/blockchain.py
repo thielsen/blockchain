@@ -13,9 +13,7 @@ def get_last_blockchain_value():
 
 def verify_chain():
     is_valid = True
-    for block_index in range(len(blockchain)):
-        if block_index == 0:
-            continue
+    for block_index in range(1, len(blockchain)):
         if blockchain[block_index][0] == blockchain[block_index - 1]:
             is_valid = True
         else:
