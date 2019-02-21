@@ -36,7 +36,7 @@ class BlockChain():
         return blockchain[-1]
 
     def hash_block(self, block):
-        return '-'.join(str([block[key] for key in block]))
+        return '-'.join([str(block[key]) for key in block])
 
     def verify_chain(self):
         for (index, block) in enumerate(self.blockchain):
@@ -45,3 +45,8 @@ class BlockChain():
             if block['previous_hash'] != self.hash_block(self.blockchain[index -1]):
                 return False
         return True
+
+    def get_balance(participant):
+        tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender'] == participant] for block in self.blockchain]
+
+
