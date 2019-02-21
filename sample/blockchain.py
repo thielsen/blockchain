@@ -1,4 +1,6 @@
 import functools
+import hashlib
+import json
 class BlockChain():
     
     def __init__(self):
@@ -48,7 +50,7 @@ class BlockChain():
         return blockchain[-1]
 
     def hash_block(self, block):
-        return '-'.join([str(block[key]) for key in block])
+        return hashlib.sha256(json.dumps(block).encode()).hexdigest()
 
     def verify_chain(self):
         for (index, block) in enumerate(self.blockchain):

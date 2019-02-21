@@ -27,7 +27,7 @@ def test_mine_block(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    assert test_blockchain.blockchain == [{'index': 0, 'previous_hash': '', 'transactions': []}, {'index': 1, 'previous_hash': '0--[]', 'transactions': [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}, {'index': 2, 'previous_hash': "1-0--[]-[{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]", 'transactions': [{'amount': 3.4, 'recipient': 'Bob', 'sender': 'Simon'}, {'amount': 3.6, 'recipient': 'Alice', 'sender': 'Simon'}, {'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}]
+    assert test_blockchain.blockchain == [{'index': 0, 'previous_hash': '', 'transactions': []}, {'index': 1, 'previous_hash': 'b2242851cf5e7216d0bbb01ad9b6659bbca55f43c9ac3e63d0fac318b579c253', 'transactions': [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}, {'index': 2, 'previous_hash': 'e25a7acdbfff55cc8d075de20429bd9c2ede0a1d5e7d54155bcee739665e6fd3', 'transactions': [{'amount': 3.4, 'recipient': 'Bob', 'sender': 'Simon'}, {'amount': 3.6, 'recipient': 'Alice', 'sender': 'Simon'}, {'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}]
 
 def test_clear_open_transactions_after_mining(test_blockchain):
     assert test_blockchain.open_transactions == []
@@ -47,7 +47,7 @@ def test_verify_bad_chain(test_blockchain):
     assert test_blockchain.verify_chain() == False
 
 def test_hash_block(test_blockchain):
-    assert test_blockchain.hash_block({'previous_hash': '', 'index': 0, 'transactions': []}) == '0--[]'
+    assert test_blockchain.hash_block({'previous_hash': '', 'index': 0, 'transactions': []}) == 'b2242851cf5e7216d0bbb01ad9b6659bbca55f43c9ac3e63d0fac318b579c253'
 
 def test_check_participants_are_added(test_blockchain):
     test_blockchain.mine_block()
