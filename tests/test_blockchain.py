@@ -61,7 +61,6 @@ def test_get_balance(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    print(test_blockchain.blockchain)
     assert test_blockchain.get_balance('Simon') == 13
     assert test_blockchain.get_balance('Bob') == 3.4
     assert test_blockchain.get_balance('Alice') == 3.6
@@ -85,11 +84,13 @@ def test_cannot_send_if_transactions_in_queue_are_too_much(test_blockchain):
     assert test_blockchain.open_transactions ==  [{'amount': 10.0, 'recipient': 'Bob', 'sender': 'Simon'}]
 
 def test_invalid_proof(test_blockchain):
-    assert test_blockchain.valid_proof([{'amount': 10.0, 'recipient': 'Bob', 'sender': 'Simon'}] , 'b2242851cf5e7216d0bbb01ad9b6659bbca55f43c9ac3e63d0fac318b579c253', 0) == False
+    assert test_blockchain.valid_proof({'previous_hash': 'fdcd010164e24fe2247e9c6b20e211ab96c0cb7b3ad2da9f3e5feaac47ecc4d1', 'index': 1, 'transactions': [{'sender': 'MINED', 'recipient': 'Simon', 'amount': 10}]} , 'bf8953d506d8467b96da1a2b8b335510ad16be3e45be8e36aacb19ef3bdbb277', 1) == False
 
 def test_valid_proof(test_blockchain):
-    x = 0
-    while x < 100:
-        assert test_blockchain.valid_proof([{'amount': 10.0, 'recipient': 'Bob', 'sender': 'Simon'}] , 'b2242851cf5e7216d0bbb01ad9b6659bbca55f43c9ac3e63d0fac318b579c253', x) == True
-        print (x)
-        x = x + 1
+    assert test_blockchain.valid_proof({'previous_hash': 'fdcd010164e24fe2247e9c6b20e211ab96c0cb7b3ad2da9f3e5feaac47ecc4d1', 'index': 1, 'transactions': [{'sender': 'MINED', 'recipient': 'Simon', 'amount': 10}]} , 'bf8953d506d8467b96da1a2b8b335510ad16be3e45be8e36aacb19ef3bdbb277', 0) == True
+
+def test_proof_of_work(test_blockchain):
+    test_blockchain.add_transaction('Bob', amount=3.4)
+    test_blockchain.add_transaction('Alice', amount=3.6)
+    test_blockchain.mine_block()
+    assert test_blockchain.proof_of_work() == 75

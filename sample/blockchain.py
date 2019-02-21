@@ -81,13 +81,13 @@ class BlockChain():
     def valid_proof(self, transactions, last_hash, proof):
         guess = (str(transactions) + str(last_hash) +str(proof)).encode()
         guess_hash = sha256(guess).hexdigest()
-        print(guess_hash)
         return guess_hash[0:2] == '00'
 
     def proof_of_work(self):
         last_block = self.blockchain[-1]
         last_hash = self.hash_block(last_block)
         proof = 0
-        while self.valid_proof(self.open_transactions, last_hash, proof):
+        while not self.valid_proof(self.open_transactions, last_hash, proof):
             proof += 1
         return proof
+        
