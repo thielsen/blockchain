@@ -1,5 +1,5 @@
 
-blockchain = [[]]
+blockchain = []
 
 def add_value(transaction_amount, last_transaction=[1]):
     blockchain.append([last_transaction, transaction_amount])
