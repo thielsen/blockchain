@@ -3,6 +3,7 @@ from blockchain import get_last_blockchain_value
 from blockchain import blockchain
 from blockchain import verify_chain
 from blockchain import mine_block
+from blockchain import participants
 
 
 def get_transaction_value():
@@ -28,6 +29,7 @@ while waiting_for_input:
     print('2. Mine a new block')
     print('3. View blockchain')
     print('4. Manipulate blockchain')
+    print('5. Output participants')
     print('0. Quit')
     user_choice = get_user_choice()
     if user_choice == 1:
@@ -44,6 +46,8 @@ while waiting_for_input:
                              'index': 0,
                              'transactions': [{'sender': 'poorfool', 'recipient': 'badactor', 'amount': '1000'}]
 }
+    elif user_choice == 5:
+        print(participants)
     elif user_choice == 0:
         waiting_for_input = False
     else:

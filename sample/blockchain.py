@@ -5,12 +5,15 @@ genesis_block = {'previous_hash': '',
 blockchain = [genesis_block]
 open_transactions = []
 owner = 'Simon'
+participants = {owner}
 
 def add_transaction(recipient, sender=owner, amount=1.0):
     transaction = {'recipient': recipient,
                    'sender': sender, 
                    'amount': amount}
     open_transactions.append(transaction)
+    participants.add(sender)
+    participants.add(recipient)
 
 def mine_block():
     last_block = blockchain[-1]
@@ -35,4 +38,3 @@ def verify_chain():
         if block['previous_hash'] != hash_block(blockchain[index -1]):
             return False
         return True
-

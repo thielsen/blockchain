@@ -28,3 +28,9 @@ def test_verify_bad_chain():
                        'transactions': [{'sender': 'poorfool', 'recipient': 'badactor', 'amount': 1000.0}]
 }
     assert verify_chain() == False
+
+def test_hash_block():
+    assert hash_block({'previous_hash': '', 'index': 0, 'transactions': []}) == "[-0-,- -'-'-,- -[-]-]"
+
+def test_check_participants_are_added():
+    assert participants == set(['Alice', 'Bob', 'Simon'])
