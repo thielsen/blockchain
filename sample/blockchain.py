@@ -18,8 +18,9 @@ class BlockChain():
         self.owner = 'Simon'
         self.participants = {self.owner}
         self.file_location = './blockchain.txt'
-        # if os.path.isfile('./blockchain.txt'):
-        #     self.load_data()
+        if os.path.isfile(self.file_location):
+            self.load_data()
+
 
     def save_data(self):
         with open(self.file_location, mode='w') as f:
@@ -61,6 +62,7 @@ class BlockChain():
         self.blockchain.append(block)
         self.save_data()
         self.open_transactions = []
+        
 
     def get_last_blockchain_value():
         if len(blockchain) < 1:
