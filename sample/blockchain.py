@@ -1,7 +1,7 @@
 from functools import reduce
-from hashlib import sha256
-from json import dumps
 from collections import OrderedDict
+
+import hash_utilities
 class BlockChain():
     
     def __init__(self):
@@ -30,7 +30,7 @@ class BlockChain():
 
     def mine_block(self):
         last_block = self.blockchain[-1]
-        hashed_block = self.hash_block(last_block)
+        hashed_block = hash_utilities.hash_block(last_block)
         proof = self.proof_of_work()
         reward_transaction = OrderedDict(
             [('sender', 'MINED'), ('recipient', self.owner), ('amount', self.MINING_REWARD)])
@@ -49,14 +49,11 @@ class BlockChain():
             return None
         return blockchain[-1]
 
-    def hash_block(self, block):
-        return sha256(dumps(block).encode()).hexdigest()
-
     def verify_chain(self):
         for (index, block) in enumerate(self.blockchain):
             if index == 0:
                 continue
-            if block['previous_hash'] != self.hash_block(self.blockchain[index -1]):
+            if block['previous_hash'] != hash_utilities.hash_block(self.blockchain[index -1]):
                 return False
             if not self.valid_proof(block['transactions'][:-1], block['previous_hash'], block['proof']):
                 print('Proof of work invalid')
@@ -84,12 +81,12 @@ class BlockChain():
 
     def valid_proof(self, transactions, last_hash, proof):
         guess = (str(transactions) + str(last_hash) +str(proof)).encode()
-        guess_hash = sha256(guess).hexdigest()
+        guess_hash = hash_utilities.hash_string_256(guess)
         return guess_hash[0:2] == '00'
 
     def proof_of_work(self):
         last_block = self.blockchain[-1]
-        last_hash = self.hash_block(last_block)
+        last_hash = hash_utilities.hash_block(last_block)
         proof = 0
         while not self.valid_proof(self.open_transactions, last_hash, proof):
             proof += 1
