@@ -27,7 +27,6 @@ def test_mine_block(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    print(test_blockchain.blockchain)
     assert test_blockchain.blockchain == [{'index': 0, 'previous_hash': '', 'transactions': []}, {'index': 1, 'previous_hash': '0--[]', 'transactions': [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}, {'index': 2, 'previous_hash': "1-0--[]-[{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]", 'transactions': [{'amount': 3.4, 'recipient': 'Bob', 'sender': 'Simon'}, {'amount': 3.6, 'recipient': 'Alice', 'sender': 'Simon'}, {'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}]
 
 def test_clear_open_transactions_after_mining(test_blockchain):
@@ -77,3 +76,9 @@ def test_cannot_send_if_no_balance(test_blockchain):
     test_blockchain.mine_block()
     assert test_blockchain.get_balance('Bob') == 0
     assert test_blockchain.get_balance('Alice') == 0
+
+def test_cannot_send_if_transactions_in_queue_are_too_much(test_blockchain):
+    test_blockchain.mine_block()
+    test_blockchain.add_transaction('Bob', amount=10.0)
+    test_blockchain.add_transaction('Alice', amount=10.0)
+    assert test_blockchain.open_transactions ==  [{'amount': 10.0, 'recipient': 'Bob', 'sender': 'Simon'}]

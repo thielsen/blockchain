@@ -58,6 +58,8 @@ class BlockChain():
 
     def get_balance(self, participant):
         tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender'] == participant] for block in self.blockchain]
+        open_tx_sender = [tx['amount'] for tx in self.open_transactions if tx['sender'] == participant]
+        tx_sender.append(open_tx_sender)
         amount_sent = 0
         for tx in tx_sender:
             print

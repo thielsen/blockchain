@@ -38,7 +38,10 @@ while waiting_for_input:
     if user_choice == 1:
         tx_data = get_transaction_value()
         recipient, amount = tx_data
-        my_blockchain.add_transaction (recipient, amount=amount)
+        if my_blockchain.add_transaction (recipient, amount=amount):
+            print('Transaction added')
+        else:
+            print('Transaction failed')
     elif user_choice == 2:
         my_blockchain.mine_block()
     elif user_choice == 3:
