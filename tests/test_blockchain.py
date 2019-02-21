@@ -35,15 +35,26 @@ def test_clear_open_transactions_after_mining(test_blockchain):
 def test_verify_chain(test_blockchain):
     assert test_blockchain.verify_chain() == True
 
-def test_verify_bad_chain(test_blockchain):
+def test_verify_bad_chain_with_false_transaction(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    test_blockchain.blockchain[0] = {'previous_hash': '', 
-                       'index': 0,
-                       'transactions': [{'sender': 'poorfool', 'recipient': 'badactor', 'amount': 1000.0}]
-}
+    test_blockchain.blockchain[0] = {'index': 0,
+                                     'previous_hash': '', 
+                                     'proof': 0,
+                                     'transactions': [{'sender': 'poorfool', 'recipient': 'badactor', 'amount': 1000.0}]}
+    assert test_blockchain.verify_chain() == False
+
+def test_verify_bad_chain_with_invalid_proof(test_blockchain):
+    test_blockchain.mine_block()
+    test_blockchain.add_transaction('Bob', amount=3.4)
+    test_blockchain.add_transaction('Alice', amount=3.6)
+    test_blockchain.mine_block()
+    test_blockchain.blockchain[1] = {'index': 1, 
+                                     'previous_hash': 'a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812', 
+                                     'proof': 267, 
+                                     'transactions': [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}
     assert test_blockchain.verify_chain() == False
 
 def test_hash_block(test_blockchain):

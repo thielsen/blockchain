@@ -60,6 +60,9 @@ class BlockChain():
                 continue
             if block['previous_hash'] != self.hash_block(self.blockchain[index -1]):
                 return False
+            if not self.valid_proof(block['transactions'][:-1], block['previous_hash'], block['proof']):
+                print('Proof of work invalid')
+                return False
         return True
 
     def get_balance(self, participant):
