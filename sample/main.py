@@ -33,6 +33,7 @@ while waiting_for_input:
     print('3. View blockchain')
     print('4. Manipulate blockchain')
     print('5. Output participants')
+    print('6. Verify all transactions in queue')
     print('0. Quit')
     user_choice = get_user_choice()
     if user_choice == 1:
@@ -54,6 +55,11 @@ while waiting_for_input:
 }
     elif user_choice == 5:
         print(my_blockchain.participants)
+    elif user_choice == 6:
+        if my_blockchain.verify_transactions():
+            print('Verified')
+        else:
+            print('Invalid transactions')
     elif user_choice == 0:
         waiting_for_input = False
     else:
@@ -61,6 +67,7 @@ while waiting_for_input:
     if not my_blockchain.verify_chain():
         print('Invalid chain')
         waiting_for_input = False
+    print('Balance of {}: {:6.2f}'.format('Simon', my_blockchain.get_balance('Simon')))
 else:
     print('User left')
 

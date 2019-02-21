@@ -61,6 +61,7 @@ def test_get_balance(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
+    print(test_blockchain.blockchain)
     assert test_blockchain.get_balance('Simon') == 13
     assert test_blockchain.get_balance('Bob') == 3.4
     assert test_blockchain.get_balance('Alice') == 3.6

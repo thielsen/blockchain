@@ -1,3 +1,4 @@
+import functools
 class BlockChain():
     
     def __init__(self):
@@ -61,16 +62,9 @@ class BlockChain():
         tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender'] == participant] for block in self.blockchain]
         open_tx_sender = [tx['amount'] for tx in self.open_transactions if tx['sender'] == participant]
         tx_sender.append(open_tx_sender)
-        amount_sent = 0
-        for tx in tx_sender:
-            print
-            if len(tx) > 0:
-                amount_sent += sum(tx)
+        amount_sent = functools.reduce(lambda x, y: x+y, functools.reduce(lambda x, y: x+y, tx_sender), 0)
         tx_recipient = [[tx['amount'] for tx in block['transactions'] if tx['recipient'] == participant] for block in self.blockchain]
-        amount_received = 0
-        for tx in tx_recipient:
-            if len(tx) > 0:
-                amount_received += sum(tx)
+        amount_received = functools.reduce(lambda x, y: x+y, functools.reduce(lambda x, y: x+y, tx_recipient), 0)
         return amount_received - amount_sent
 
     def verify_transaction(self, transaction):
@@ -79,3 +73,6 @@ class BlockChain():
             return True
         else:
             return False
+
+    def verify_transactions(self):
+        return all([self.verify_transaction(tx) for tx in self.open_transactions])
