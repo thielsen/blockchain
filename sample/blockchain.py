@@ -15,10 +15,6 @@ def verify_chain():
     block_index = 0
     is_valid = True
     for block in blockchain:
-        print('block 0:')
-        print(block[0])
-        print('block -1:')
-        print(blockchain[block_index -1])
         if block_index == 0:
             block_index += 1
             continue
