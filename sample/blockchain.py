@@ -1,6 +1,6 @@
-import functools
-import hashlib
-import json
+from functools import reduce
+from hashlib import sha256
+from json import dumps
 class BlockChain():
     
     def __init__(self):
@@ -50,7 +50,7 @@ class BlockChain():
         return blockchain[-1]
 
     def hash_block(self, block):
-        return hashlib.sha256(json.dumps(block).encode()).hexdigest()
+        return sha256(dumps(block).encode()).hexdigest()
 
     def verify_chain(self):
         for (index, block) in enumerate(self.blockchain):
@@ -64,9 +64,9 @@ class BlockChain():
         tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender'] == participant] for block in self.blockchain]
         open_tx_sender = [tx['amount'] for tx in self.open_transactions if tx['sender'] == participant]
         tx_sender.append(open_tx_sender)
-        amount_sent = functools.reduce(lambda x, y: x+sum(y), tx_sender, 0)
+        amount_sent = reduce(lambda x, y: x+sum(y), tx_sender, 0)
         tx_recipient = [[tx['amount'] for tx in block['transactions'] if tx['recipient'] == participant] for block in self.blockchain]
-        amount_received = functools.reduce(lambda x, y: x+sum(y), tx_recipient, 0)
+        amount_received = reduce(lambda x, y: x+sum(y), tx_recipient, 0)
         return amount_received - amount_sent
 
     def verify_transaction(self, transaction):
