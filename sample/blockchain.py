@@ -1,5 +1,7 @@
 from functools import reduce
 from collections import OrderedDict
+from json import dumps, loads
+import os
 
 import hash_utilities
 class BlockChain():
@@ -15,12 +17,21 @@ class BlockChain():
         self.open_transactions = []
         self.owner = 'Simon'
         self.participants = {self.owner}
+        self.file_location = './blockchain.txt'
+        # if os.path.isfile('./blockchain.txt'):
+        #     self.load_data()
 
     def save_data(self):
-        with open('blockchain.txt', mode='w') as f:
-            f.write(str(self.blockchain))
+        with open(self.file_location, mode='w') as f:
+            f.write(dumps(self.blockchain))
             f.write('\n')
-            f.write(str(self.open_transactions))
+            f.write(dumps(self.open_transactions))
+
+    def load_data(self):
+        with open(self.file_location, mode='r') as f:
+            file_content = f.readlines()
+            self.blockchain = loads(file_content[0])
+            self.open_transactions = loads(file_content[1])
 
     def add_transaction(self, recipient, sender=None, amount=1.0):
         if sender is None:

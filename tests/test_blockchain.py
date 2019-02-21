@@ -6,7 +6,9 @@ import os
 @pytest.fixture
 def test_blockchain():
     test_blockchain = BlockChain()
+    test_blockchain.file_location = './tests/blockchain.txt'
     return test_blockchain
+    import os
 
 # def test_add_transaction_adds_default():
 #     add_transaction(1, get_last_blockchain_value())
@@ -106,6 +108,14 @@ def test_proof_of_work(test_blockchain):
     test_blockchain.mine_block()
     assert test_blockchain.proof_of_work() == 207
 
+# def test_create_file(tmpdir):
+#     p = tmpdir.mkdir("sub").join("blockchain.txt")
+#     test_blockchain = BlockChain()
+#     test_blockchain.mine_block()
+#     # p.write("content")
+#     assert p.read() == "content"
+#     assert len(tmpdir.listdir()) == 1
+
 # def test_create_file(tmp_path):
 #     d = tmp_path / "sub"
 #     d.mkdir()
@@ -116,3 +126,4 @@ def test_proof_of_work(test_blockchain):
 #     assert len(list(tmp_path.iterdir())) == 1
 #     assert 0
 
+# def test_load_data_on_startup
