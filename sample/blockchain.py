@@ -15,18 +15,19 @@ def add_transaction(recipient, sender=owner, amount=1.0):
 
 def mine_block():
     last_block = blockchain[-1]
-    hashed_block = str([last_block[key] for key in last_block ])
+    hashed_block = hash_block(last_block)
     block = {'previous_hash': 'XYZ', 
              'index': len(blockchain),
              'transactions': open_transactions}
     blockchain.append(block)
     
-
-
 def get_last_blockchain_value():
     if len(blockchain) < 1:
       return None
     return blockchain[-1]
+
+def hash_block(block):
+    return '-'.join(str([block[key] for key in block]))
 
 def verify_chain():
     is_valid = True
