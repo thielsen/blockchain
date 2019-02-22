@@ -18,6 +18,12 @@ class BlockChain():
         self.file_location = file_location
         self.load_data()
         self.node = node_id
+    
+    def view_blockchain(self):
+        return self.__blockchain
+
+    def view_open_transactions(self):
+        return self.__open_transactions
 
     def save_data(self):
         try:
