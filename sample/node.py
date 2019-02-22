@@ -1,13 +1,14 @@
-from uuid import uuid4
-
 from sample.blockchain import BlockChain
-from .sampleverify import Verify
+from sample.verify import Verify
+from sample.wallet import Wallet
+
 
 class Node:
 
     def __init__(self):
-        self.owner = str(uuid4())
-        self.blockchain = BlockChain(self.owner)
+        self.owner = Wallet()
+        self.owner.create_keys()
+        self.blockchain = BlockChain(self.owner.public_key)
 
     def listen_for_input(self):
         waiting_for_input = True
@@ -18,18 +19,19 @@ class Node:
             print('3. View blockchain')
             print('4. Verify all transactions in queue')
             print('5. Create wallet')
-            print('6. VLoad wallet')
+            print('6. Load wallet')
             print('0. Quit')
             user_choice = self.get_user_choice()
             if user_choice == 1:
                 tx_data = self.get_transaction_value()
                 recipient, amount = tx_data
-                if self.blockchain.add_transaction (recipient, self.owner, amount=amount):
+                if self.blockchain.add_transaction (recipient, self.owner.public_key, amount=amount):
                     print('Transaction added')
                 else:
                     print('Transaction failed')
             elif user_choice == 2:
-                self.blockchain.mine_block()
+                if not self.blockchain.mine_block():
+                    print('Mining failed')
             elif user_choice == 3:
                 self.print_blockchain_element()
             elif user_choice == 4:
@@ -38,7 +40,8 @@ class Node:
                 else:
                     print('Invalid transactions')
             elif user_choice == 5:
-                pass
+                self.owner.create_keys()
+                self.blockchain = BlockChain(self.owner.public_key)
             elif user_choice == 6:
                 pass
             elif user_choice == 0:
@@ -48,7 +51,7 @@ class Node:
             if not Verify.verify_chain(self.blockchain.view_blockchain()):
                 print('Invalid chain')
                 waiting_for_input = False
-            print('Balance of {}: {:6.2f}'.format(self.owner, self.blockchain.get_balance()))
+            print('Balance of {}: {:6.2f}'.format(self.owner.public_key, self.blockchain.get_balance()))
         else:
             print('User left')
         print('Done')
@@ -68,5 +71,3 @@ class Node:
         else:
             print('-' * 20)
 
-node = Node()
-node.listen_for_input()

@@ -42,6 +42,8 @@ class BlockChain():
     def add_transaction(self, recipient, sender=None, amount=1.0):
         if sender is None:
             sender = self.node
+        if self.node == None:
+            return False
         transaction = Transaction(sender, recipient, amount)
         if Verify.verify_transaction(transaction, self.get_balance):
             self.__open_transactions.append(transaction)
@@ -50,6 +52,8 @@ class BlockChain():
         return False
 
     def mine_block(self):
+        if self.node == None:
+            return False
         last_block = self.__blockchain[-1]
         hashed_block = hash_block(last_block)
         proof = self.proof_of_work()

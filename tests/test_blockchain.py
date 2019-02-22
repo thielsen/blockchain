@@ -3,6 +3,7 @@ import pytest
 import os
 
 from sample.blockchain import *
+from sample.hash_utilities import *
 from sample.block import *
 from sample.transaction import *
 
@@ -27,6 +28,7 @@ def test_add_transaction_to_open(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
+
     assert repr(test_blockchain.view_open_transactions()[0]) == 'Sender: Simon, Recipient: Bob, Amount: 3.4'
     assert repr(test_blockchain.view_open_transactions()[1]) == 'Sender: Simon, Recipient: Alice, Amount: 3.6'
     assert isinstance(test_blockchain.view_open_transactions()[0], Transaction) is True
