@@ -1,11 +1,12 @@
+import os
+import pytest
+
+
 from sample.blockchain import *
-from sample.hash_utilities import *
+# from sample.hash_utilities import *
 from sample.block import *
 from sample.transaction import *
 from sample.verify import *
-
-import pytest
-import os
 
 @pytest.fixture
 def test_blockchain():

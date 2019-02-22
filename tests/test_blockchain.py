@@ -1,10 +1,10 @@
-from sample.blockchain import *
-from sample.hash_utilities import *
-from sample.block import *
-from sample.transaction import *
-
+from pickle import loads
 import pytest
 import os
+
+from sample.blockchain import *
+from sample.block import *
+from sample.transaction import *
 
 @pytest.fixture
 def test_blockchain():
@@ -27,7 +27,6 @@ def test_add_transaction_to_open(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
-    print(test_blockchain.view_open_transactions()[0])
     assert repr(test_blockchain.view_open_transactions()[0]) == 'Sender: Simon, Recipient: Bob, Amount: 3.4'
     assert repr(test_blockchain.view_open_transactions()[1]) == 'Sender: Simon, Recipient: Alice, Amount: 3.6'
     assert isinstance(test_blockchain.view_open_transactions()[0], Transaction) is True
@@ -84,7 +83,7 @@ def test_cannot_send_if_transactions_in_queue_are_too_much(test_blockchain):
 def test_create_file(test_blockchain):
     test_blockchain.mine_block()
     with open(test_blockchain.file_location, mode='rb') as f:
-            file_content = pickle.loads(f.read())
+        file_content = loads(f.read())
     assert file_content['ot'] == []
     assert('Index: 0' in repr(file_content['chain'][0])) == True
     assert('Index: 1' in repr(file_content['chain'][1])) == True

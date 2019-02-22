@@ -1,13 +1,10 @@
 from functools import reduce
-from collections import OrderedDict
-from json import dumps, loads
-import os
-import pickle
+from pickle import loads, dumps
 
-from hash_utilities import hash_block
-from block import Block
-from transaction import Transaction
-from verify import Verify
+from sample.hash_utilities import hash_block
+from sample.block import Block
+from sample.transaction import Transaction
+from sample.verify import Verify
 class BlockChain():
     
     def __init__(self, node_id, file_location='./blockchain.bin'):
@@ -29,14 +26,14 @@ class BlockChain():
         try:
             with open(self.file_location, mode='wb') as f:
                 save_data = {'chain': self.__blockchain, 'ot': self.__open_transactions}
-                f.write(pickle.dumps(save_data))
+                f.write(dumps(save_data))
         except IOError:
             ('Save error')
 
     def load_data(self):
         try:
             with open(self.file_location, mode='rb') as f:
-                file_content = pickle.loads(f.read())
+                file_content = loads(f.read())
                 self.__blockchain = file_content['chain']
                 self.__open_transactions = file_content['ot']
         except IOError:

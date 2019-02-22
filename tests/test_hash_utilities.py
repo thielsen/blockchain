@@ -8,5 +8,6 @@ def test_hash_block():
     assert hash_block(Block(0, '', [], 0, 0)) == 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d'
     
 def test_hash_string256():
-    assert hash_string_256('teststring') == '3c8727e019a42b444667a587b6001251becadabbb36bfed8087a92c18882d111'
+    test_string = 'teststring'.encode('utf-8')
+    assert hash_string_256(test_string) == '3c8727e019a42b444667a587b6001251becadabbb36bfed8087a92c18882d111'
         
