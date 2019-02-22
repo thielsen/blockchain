@@ -8,7 +8,6 @@ class Node:
     def __init__(self):
         self.owner = str(uuid4())
         self.blockchain = BlockChain(self.owner)
-        self.verify = Verify()
 
     def listen_for_input(self):
         waiting_for_input = True
@@ -32,7 +31,7 @@ class Node:
             elif user_choice == 3:
                 self.print_blockchain_element()
             elif user_choice == 4:
-                if self.verify.verify_transactions(self.blockchain.open_transactions, self.blockchain.get_balance):
+                if Verify.verify_transactions(self.blockchain.open_transactions, self.blockchain.get_balance):
                     print('Verified')
                 else:
                     print('Invalid transactions')
@@ -40,7 +39,7 @@ class Node:
                 waiting_for_input = False
             else:
                 print('Input invalid')
-            if not self.verify.verify_chain(self.blockchain.blockchain):
+            if not Verify.verify_chain(self.blockchain.blockchain):
                 print('Invalid chain')
                 waiting_for_input = False
             print('Balance of {}: {:6.2f}'.format(self.owner, self.blockchain.get_balance()))

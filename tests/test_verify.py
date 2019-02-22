@@ -15,33 +15,28 @@ def test_blockchain():
         os.remove(test_blockchain.file_location)
 
 def test_invalid_proof(test_blockchain):
-    test_verify = Verify()
-    assert test_verify.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 0) == False
+    assert Verify.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 0) == False
 
 def test_valid_proof(test_blockchain):
-    test_verify = Verify()
-    assert test_verify.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 87) == True
+    assert Verify.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 87) == True
 
 def test_verify_chain(test_blockchain):
-    test_verify = Verify()
-    assert test_verify.verify_chain(test_blockchain.blockchain) == True
+    assert Verify.verify_chain(test_blockchain.blockchain) == True
 
 def test_verify_bad_chain_with_false_transaction(test_blockchain):
-    test_verify = Verify()
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
     test_block = Block(0, '', [{'sender': 'poorfool', 'recipient': 'badactor', 'amount': 1000.0}], 0)
     test_blockchain.blockchain[1] = test_block
-    assert test_verify.verify_chain(test_blockchain.blockchain) == False
+    assert Verify.verify_chain(test_blockchain.blockchain) == False
 
 def test_verify_bad_chain_with_invalid_proof(test_blockchain):
-    test_verify = Verify()
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
     test_block = Block(1, 'a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812', [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}], 268)
     test_blockchain.blockchain[1] = test_block
-    assert test_verify.verify_chain(test_blockchain.blockchain) == False
+    assert Verify.verify_chain(test_blockchain.blockchain) == False

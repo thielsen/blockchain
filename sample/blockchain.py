@@ -17,7 +17,6 @@ class BlockChain():
         self.open_transactions = []
         self.file_location = file_location
         self.load_data()
-        self.verify = Verify()
         self.node = node_id
 
     def save_data(self):
@@ -41,7 +40,7 @@ class BlockChain():
         if sender is None:
             sender = self.node
         transaction = Transaction(sender, recipient, amount)
-        if self.verify.verify_transaction(transaction, self.get_balance):
+        if Verify.verify_transaction(transaction, self.get_balance):
             self.open_transactions.append(transaction)
             self.save_data()
             return True
@@ -77,7 +76,7 @@ class BlockChain():
         last_block = self.blockchain[-1]
         last_hash = hash_block(last_block)
         proof = 0
-        while not self.verify.valid_proof(self.open_transactions, last_hash, proof):
+        while not Verify.valid_proof(self.open_transactions, last_hash, proof):
             proof += 1
         return proof
         
