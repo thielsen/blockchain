@@ -31,7 +31,6 @@ while waiting_for_input:
     print('1. Add a transaction')
     print('2. Mine a new block')
     print('3. View blockchain')
-    print('4. Manipulate blockchain')
     print('5. Output participants')
     print('6. Verify all transactions in queue')
     print('0. Quit')
@@ -47,12 +46,6 @@ while waiting_for_input:
         my_blockchain.mine_block()
     elif user_choice == 3:
         print_blockchain_element()
-    elif user_choice == 4:
-        if len(my_blockchain.blockchain) >= 1:
-            my_blockchain.blockchain[0] = {'previous_hash': '', 
-                             'index': 0,
-                             'transactions': [{'sender': 'poorfool', 'recipient': 'badactor', 'amount': '1000'}]
-}
     elif user_choice == 5:
         print(my_blockchain.participants)
     elif user_choice == 6:

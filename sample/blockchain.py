@@ -5,14 +5,12 @@ import os
 import pickle
 
 import hash_utilities
+from block import Block
 class BlockChain():
     
     def __init__(self, file_location='./blockchain.bin'):
         self.MINING_REWARD = 10
-        self.GENESIS_BLOCK = {'previous_hash': '', 
-                              'index': 0,
-                              'transactions': [],
-                              'proof': 0}
+        self.GENESIS_BLOCK = Block(0, '', [], 0, 0)
         self.blockchain = []
         self.open_transactions = []
         self.owner = 'Simon'
@@ -59,10 +57,7 @@ class BlockChain():
             [('sender', 'MINED'), ('recipient', self.owner), ('amount', self.MINING_REWARD)]) 
         copied_transactions = self.open_transactions[:]
         copied_transactions.append(reward_transaction)
-        block = {'previous_hash': hashed_block, 
-                'index': len(self.blockchain),
-                'transactions': copied_transactions,
-                'proof': proof}
+        block = Block(len(self.blockchain), hashed_block, copied_transactions, proof)
         self.blockchain.append(block)
         self.open_transactions = []
         self.save_data()
@@ -75,21 +70,22 @@ class BlockChain():
 
     def verify_chain(self):
         for (index, block) in enumerate(self.blockchain):
+            print(block)
             if index == 0:
                 continue
-            if block['previous_hash'] != hash_utilities.hash_block(self.blockchain[index -1]):
+            if block.previous_hash != hash_utilities.hash_block(self.blockchain[index -1]):
                 return False
-            if not self.valid_proof(block['transactions'][:-1], block['previous_hash'], block['proof']):
+            if not self.valid_proof(block.transactions[:-1], block.previous_hash, block.proof):
                 print('Proof of work invalid')
                 return False
         return True
 
     def get_balance(self, participant):
-        tx_sender = [[tx['amount'] for tx in block['transactions'] if tx['sender'] == participant] for block in self.blockchain]
+        tx_sender = [[tx['amount'] for tx in block.transactions if tx['sender'] == participant] for block in self.blockchain]
         open_tx_sender = [tx['amount'] for tx in self.open_transactions if tx['sender'] == participant]
         tx_sender.append(open_tx_sender)
         amount_sent = reduce(lambda x, y: x+sum(y), tx_sender, 0)
-        tx_recipient = [[tx['amount'] for tx in block['transactions'] if tx['recipient'] == participant] for block in self.blockchain]
+        tx_recipient = [[tx['amount'] for tx in block.transactions if tx['recipient'] == participant] for block in self.blockchain]
         amount_received = reduce(lambda x, y: x+sum(y), tx_recipient, 0)
         return amount_received - amount_sent
 
