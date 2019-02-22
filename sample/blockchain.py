@@ -64,6 +64,7 @@ class BlockChain():
         self.__blockchain.append(block)
         self.__open_transactions = []
         self.save_data()
+        return True
         
     def get_last_blockchain_value(self):
         if len(self.__blockchain) < 1:

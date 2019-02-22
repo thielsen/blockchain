@@ -13,6 +13,10 @@ class Wallet:
         private_key, public_key = self.generate_keys()
         self.private_key = private_key
         self.public_key = public_key
+        with open('wallet.txt', mode='w') as f:
+            f.write(self.private_key)
+            f.write('\n')
+            f.write(self.public_key)
     
     def load_keys(self):
         pass
