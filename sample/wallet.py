@@ -13,13 +13,23 @@ class Wallet:
         private_key, public_key = self.generate_keys()
         self.private_key = private_key
         self.public_key = public_key
-        with open('wallet.txt', mode='w') as f:
-            f.write(self.private_key)
-            f.write('\n')
-            f.write(self.public_key)
+        try:
+            with open('wallet.txt', mode='w') as f:
+                f.write(self.private_key)
+                f.write('\n')
+                f.write(self.public_key)
+        except IOError:
+            ('Save error')
     
     def load_keys(self):
-        pass
+        self.public_key = public_key
+        try:
+            with open('wallet.txt', mode='r') as f:
+                keys = f.readlines()
+                self.private_key = keys[0][:-1]
+                self.public_key = keys[1]
+        except IOError:
+            ('Keys not found..')
 
     def generate_keys(self):
         private_key = RSA.generate(1024, Crypto.Random.new().read)

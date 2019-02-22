@@ -43,7 +43,8 @@ class Node:
                 self.owner.create_keys()
                 self.blockchain = BlockChain(self.owner.public_key)
             elif user_choice == 6:
-                pass
+                self.wallet.load_keys()
+                self.blockchain = BlockChain(self.owner.public_key)
             elif user_choice == 0:
                 waiting_for_input = False
             else:
