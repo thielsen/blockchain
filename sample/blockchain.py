@@ -13,7 +13,7 @@ class BlockChain():
                               'index': 0,
                               'transactions': [],
                               'proof': 0}
-        self.blockchain = [self.GENESIS_BLOCK]
+        self.blockchain = []
         self.open_transactions = []
         self.owner = 'Simon'
         self.participants = {self.owner}
@@ -21,9 +21,12 @@ class BlockChain():
         self.load_data()
 
     def save_data(self):
-        with open(self.file_location, mode='wb') as f:
-            save_data = {'chain': self.blockchain, 'ot': self.open_transactions}
-            f.write(pickle.dumps(save_data))
+        try:
+            with open(self.file_location, mode='wb') as f:
+                save_data = {'chain': self.blockchain, 'ot': self.open_transactions}
+                f.write(pickle.dumps(save_data))
+        except IOError:
+            ('Save error')
 
     def load_data(self):
         try:
@@ -32,7 +35,9 @@ class BlockChain():
                 self.blockchain = file_content['chain']
                 self.open_transactions = file_content['ot']
         except IOError:
-            print('Existing blockchain not found')
+            print('Existing blockchain not found. Initializing...')
+            self.blockchain = [self.GENESIS_BLOCK]
+            self.open_transactions = []
 
     def add_transaction(self, recipient, sender=None, amount=1.0):
         if sender is None:
