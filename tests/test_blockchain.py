@@ -27,15 +27,20 @@ def test_add_transaction_to_open(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
+    print(test_blockchain.open_transactions[0])
+    assert repr(test_blockchain.open_transactions[0]) == 'Sender: Simon, Recipient: Bob, Amount: 3.4'
+    assert repr(test_blockchain.open_transactions[1]) == 'Sender: Simon, Recipient: Alice, Amount: 3.6'
     assert isinstance(test_blockchain.open_transactions[0], Transaction) is True
+    assert isinstance(test_blockchain.open_transactions[1], Transaction) is True
 
 def test_mine_block(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-#     print(test_blockchain.blockchain)
-#     assert test_blockchain.blockchain == [{'index': 0, 'previous_hash': '', 'proof': 0, 'transactions': []}, {'index': 1, 'previous_hash': 'a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812', 'proof': 267, 'transactions': [OrderedDict([('sender', 'MINED'), ('recipient', 'Simon'), ('amount', 10)])]}, {'index': 2, 'previous_hash': '5f8e32c4d742d8f6238692c4919024faf95f9b574781eb12607acd205d45e0ea', 'proof': 252, 'transactions': [OrderedDict([('sender', 'Simon'), ('recipient', 'Bob'), ('amount', 3.4)]), OrderedDict([('sender', 'Simon'), ('recipient', 'Alice'), ('amount', 3.6)]), OrderedDict([('sender', 'MINED'), ('recipient', 'Simon'), ('amount', 10)])]}]
+    assert ('Index: 0' in repr(test_blockchain.blockchain[0])) is True
+    assert ('Index: 1' in repr(test_blockchain.blockchain[1])) is True
+    assert ('Index: 2' in repr(test_blockchain.blockchain[2])) is True
     assert (isinstance(test_blockchain.blockchain[0], Block)) is True
     assert (isinstance(test_blockchain.blockchain[1], Block)) is True
     assert (isinstance(test_blockchain.blockchain[2], Block)) is True
@@ -116,6 +121,9 @@ def test_create_file(test_blockchain):
     with open(test_blockchain.file_location, mode='rb') as f:
             file_content = pickle.loads(f.read())
     assert file_content['ot'] == []
+    print(file_content['chain'][0])
+    assert('Index: 0' in repr(file_content['chain'][0])) == True
+    assert('Index: 1' in repr(file_content['chain'][1])) == True
     assert (isinstance(file_content['chain'][0], Block)) is True
     assert (isinstance(file_content['chain'][1], Block)) is True
 

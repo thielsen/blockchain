@@ -104,9 +104,6 @@ class BlockChain():
         return all([self.verify_transaction(tx) for tx in self.open_transactions])
 
     def valid_proof(self, transactions, last_hash, proof):
-        print('transactions: {}'.format(transactions))
-        print('last hash: {}'.format(last_hash))
-        print('proof: {}'.format(proof))
         guess = (str([tx.to_ordered_dict() for tx in transactions]) + str(last_hash) +str(proof)).encode()
         guess_hash = hash_utilities.hash_string_256(guess)
         return guess_hash[0:2] == '00'
