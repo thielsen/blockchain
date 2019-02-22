@@ -5,13 +5,10 @@ import os
 
 @pytest.fixture
 def test_blockchain():
-    test_blockchain = BlockChain()
-    test_blockchain.file_location = './tests/blockchain.txt'
-    print test_blockchain.file_location
+    test_blockchain = BlockChain('./tests/blockchain.bin')
     yield test_blockchain
     if os.path.isfile(test_blockchain.file_location):
         os.remove(test_blockchain.file_location)
-
 
 # def test_add_transaction_adds_default():
 #     add_transaction(1, get_last_blockchain_value())
@@ -31,7 +28,6 @@ def test_add_transaction_to_open(test_blockchain):
 
 def test_mine_block(test_blockchain):
     test_blockchain.mine_block()
-    print test_blockchain.file_location
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
@@ -114,9 +110,8 @@ def test_proof_of_work(test_blockchain):
 
 def test_create_file(test_blockchain):
     test_blockchain.mine_block()
-    with open(test_blockchain.file_location, mode='r') as f:
-        file_content = f.readlines()
-        assert file_content[0] == '[{"index": 0, "previous_hash": "", "proof": 0, "transactions": []}, {"index": 1, "previous_hash": "a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812", "proof": 267, "transactions": [{"sender": "MINED", "recipient": "Simon", "amount": 10}]}]\n'
-        assert file_content[1] == '[]'
-
+    with open(test_blockchain.file_location, mode='rb') as f:
+            file_content = pickle.loads(f.read())
+    assert file_content['chain'] == [{'index': 0, 'previous_hash': '', 'transactions': [], 'proof': 0}, {'index': 1, 'previous_hash': 'a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812', 'transactions': [OrderedDict([('sender', 'MINED'), ('recipient', 'Simon'), ('amount', 10)])], 'proof': 267}]
+    assert file_content['ot'] == []
 # def test_load_data_on_startup

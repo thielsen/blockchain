@@ -2,11 +2,12 @@ from functools import reduce
 from collections import OrderedDict
 from json import dumps, loads
 import os
+import pickle
 
 import hash_utilities
 class BlockChain():
     
-    def __init__(self):
+    def __init__(self, file_location):
         self.MINING_REWARD = 10
         self.GENESIS_BLOCK = {'previous_hash': '', 
                               'index': 0,
@@ -16,32 +17,20 @@ class BlockChain():
         self.open_transactions = []
         self.owner = 'Simon'
         self.participants = {self.owner}
-        self.file_location = './blockchain.txt'
+        self.file_location = file_location
         if os.path.isfile(self.file_location):
             self.load_data()
 
-
     def save_data(self):
-        with open(self.file_location, mode='w') as f:
-            f.write(dumps(self.blockchain))
-            f.write('\n')
-            f.write(dumps(self.open_transactions))
+        with open(self.file_location, mode='wb') as f:
+            save_data = {'chain': self.blockchain, 'ot': self.open_transactions}
+            f.write(pickle.dumps(save_data))
 
     def load_data(self):
-        with open(self.file_location, mode='r') as f:
-            print(self.file_location)
-            file_content = f.readlines()
-            self.blockchain = loads(file_content[0][:-1])
-            updated_blockchain =[]
-            for block in self.blockchain:
-                updated_block = {'previous_hash': block['previous_hash'], 'index': block['index'], 'proof': block['proof'], 'transactions': [OrderedDict([('sender', tx['sender']), ('recipient', tx['recipient']), ('amount', tx['amount'])]) for tx in block['transactions']]}
-                updated_blockchain.append(updated_block)
-            self.blockchain = updated_blockchain
-            self.open_transactions = loads(file_content[1])
-            updated_transactions = []
-            for tx in self.open_transactions:
-                updated_transactions = [OrderedDict([('sender', tx['sender']), ('recipient', tx['recipient']), ('amount', tx['amount'])])]
-            self.open_transactions = updated_transactions
+        with open(self.file_location, mode='rb') as f:
+            file_content = pickle.loads(f.read())
+            self.blockchain = file_content['chain']
+            self.open_transactions = file_content['ot']
 
     def add_transaction(self, recipient, sender=None, amount=1.0):
         if sender is None:
