@@ -27,7 +27,6 @@ def test_add_transaction_to_open(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
-    print(test_blockchain.open_transactions[0])
     assert repr(test_blockchain.open_transactions[0]) == 'Sender: Simon, Recipient: Bob, Amount: 3.4'
     assert repr(test_blockchain.open_transactions[1]) == 'Sender: Simon, Recipient: Alice, Amount: 3.6'
     assert isinstance(test_blockchain.open_transactions[0], Transaction) is True
@@ -47,27 +46,6 @@ def test_mine_block(test_blockchain):
 
 def test_clear_open_transactions_after_mining(test_blockchain):
     assert test_blockchain.open_transactions == []
-
-def test_verify_chain(test_blockchain):
-    assert test_blockchain.verify_chain() == True
-
-def test_verify_bad_chain_with_false_transaction(test_blockchain):
-    test_blockchain.mine_block()
-    test_blockchain.add_transaction('Bob', amount=3.4)
-    test_blockchain.add_transaction('Alice', amount=3.6)
-    test_blockchain.mine_block()
-    test_block = Block(0, '', [{'sender': 'poorfool', 'recipient': 'badactor', 'amount': 1000.0}], 0)
-    test_blockchain.blockchain[1] = test_block
-    assert test_blockchain.verify_chain() == False
-
-def test_verify_bad_chain_with_invalid_proof(test_blockchain):
-    test_blockchain.mine_block()
-    test_blockchain.add_transaction('Bob', amount=3.4)
-    test_blockchain.add_transaction('Alice', amount=3.6)
-    test_blockchain.mine_block()
-    test_block = Block(1, 'a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812', [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}], 268)
-    test_blockchain.blockchain[1] = test_block
-    assert test_blockchain.verify_chain() == False
 
 def test_check_participants_are_added(test_blockchain):
     test_blockchain.mine_block()
@@ -103,11 +81,6 @@ def test_cannot_send_if_transactions_in_queue_are_too_much(test_blockchain):
     test_blockchain.add_transaction('Alice', amount=10.0)
     assert len(test_blockchain.open_transactions) == 1
 
-def test_invalid_proof(test_blockchain):
-    assert test_blockchain.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 0) == False
-
-def test_valid_proof(test_blockchain):
-    assert test_blockchain.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 87) == True
 
 # Need to mock this test with hardcoded timestamps as time stamps are changing
 # def test_proof_of_work(test_blockchain):
@@ -121,7 +94,6 @@ def test_create_file(test_blockchain):
     with open(test_blockchain.file_location, mode='rb') as f:
             file_content = pickle.loads(f.read())
     assert file_content['ot'] == []
-    print(file_content['chain'][0])
     assert('Index: 0' in repr(file_content['chain'][0])) == True
     assert('Index: 1' in repr(file_content['chain'][1])) == True
     assert (isinstance(file_content['chain'][0], Block)) is True

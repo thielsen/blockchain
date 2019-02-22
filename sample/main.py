@@ -6,8 +6,10 @@
 # from blockchain import participants
 # from blockchain import open_transactions
 from blockchain import *
+from verify import Verify
 
 my_blockchain = BlockChain()
+verify = Verify()
 
 def get_transaction_value():
     tx_recipient = input('Enter recipient: ')
@@ -49,7 +51,7 @@ while waiting_for_input:
     elif user_choice == 5:
         print(my_blockchain.participants)
     elif user_choice == 6:
-        if my_blockchain.verify_transactions():
+        if verify.verify_transactions(my_blockchain.open_transactions, my_blockchain.get_balance):
             print('Verified')
         else:
             print('Invalid transactions')
@@ -57,7 +59,7 @@ while waiting_for_input:
         waiting_for_input = False
     else:
         print('Input invalid')
-    if not my_blockchain.verify_chain():
+    if not verify.verify_chain(my_blockchain.blockchain):
         print('Invalid chain')
         waiting_for_input = False
     print('Balance of {}: {:6.2f}'.format('Simon', my_blockchain.get_balance('Simon')))
