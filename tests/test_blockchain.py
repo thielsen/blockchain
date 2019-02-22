@@ -27,25 +27,25 @@ def test_add_transaction_to_open(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
-    assert repr(test_blockchain.open_transactions[0]) == 'Sender: Simon, Recipient: Bob, Amount: 3.4'
-    assert repr(test_blockchain.open_transactions[1]) == 'Sender: Simon, Recipient: Alice, Amount: 3.6'
-    assert isinstance(test_blockchain.open_transactions[0], Transaction) is True
-    assert isinstance(test_blockchain.open_transactions[1], Transaction) is True
+    assert repr(test_blockchain._BlockChain__open_transactions[0]) == 'Sender: Simon, Recipient: Bob, Amount: 3.4'
+    assert repr(test_blockchain._BlockChain__open_transactions[1]) == 'Sender: Simon, Recipient: Alice, Amount: 3.6'
+    assert isinstance(test_blockchain._BlockChain__open_transactions[0], Transaction) is True
+    assert isinstance(test_blockchain._BlockChain__open_transactions[1], Transaction) is True
 
 def test_mine_block(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    assert ('Index: 0' in repr(test_blockchain.blockchain[0])) is True
-    assert ('Index: 1' in repr(test_blockchain.blockchain[1])) is True
-    assert ('Index: 2' in repr(test_blockchain.blockchain[2])) is True
-    assert (isinstance(test_blockchain.blockchain[0], Block)) is True
-    assert (isinstance(test_blockchain.blockchain[1], Block)) is True
-    assert (isinstance(test_blockchain.blockchain[2], Block)) is True
+    assert ('Index: 0' in repr(test_blockchain._BlockChain__blockchain[0])) is True
+    assert ('Index: 1' in repr(test_blockchain._BlockChain__blockchain[1])) is True
+    assert ('Index: 2' in repr(test_blockchain._BlockChain__blockchain[2])) is True
+    assert (isinstance(test_blockchain._BlockChain__blockchain[0], Block)) is True
+    assert (isinstance(test_blockchain._BlockChain__blockchain[1], Block)) is True
+    assert (isinstance(test_blockchain._BlockChain__blockchain[2], Block)) is True
 
 def test_clear_open_transactions_after_mining(test_blockchain):
-    assert test_blockchain.open_transactions == []
+    assert test_blockchain._BlockChain__open_transactions == []
 
 def test_get_balance(test_blockchain):
     test_blockchain.mine_block()
@@ -63,14 +63,14 @@ def test_cannot_send_if_no_balance(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    assert ('Bob' in repr(test_blockchain.blockchain)) is False
-    assert ('Alice' in repr(test_blockchain.blockchain)) is False
+    assert ('Bob' in repr(test_blockchain._BlockChain__blockchain)) is False
+    assert ('Alice' in repr(test_blockchain._BlockChain__blockchain)) is False
 
 def test_cannot_send_if_transactions_in_queue_are_too_much(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=10.0)
     test_blockchain.add_transaction('Alice', amount=10.0)
-    assert len(test_blockchain.open_transactions) == 1
+    assert len(test_blockchain._BlockChain__open_transactions) == 1
 
 
 # Need to mock this test with hardcoded timestamps as time stamps are changing
