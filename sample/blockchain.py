@@ -20,10 +20,10 @@ class BlockChain():
         self.node = node_id
     
     def view_blockchain(self):
-        return self.__blockchain
+        return self.__blockchain[:]
 
     def view_open_transactions(self):
-        return self.__open_transactions
+        return self.__open_transactions[:]
 
     def save_data(self):
         try:
