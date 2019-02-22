@@ -8,7 +8,7 @@ import os
 
 @pytest.fixture
 def test_blockchain():
-    test_blockchain = BlockChain('./tests/blockchain.bin')
+    test_blockchain = BlockChain('Simon', './tests/blockchain.bin')
     yield test_blockchain
     if os.path.isfile(test_blockchain.file_location):
         os.remove(test_blockchain.file_location)
@@ -47,33 +47,24 @@ def test_mine_block(test_blockchain):
 def test_clear_open_transactions_after_mining(test_blockchain):
     assert test_blockchain.open_transactions == []
 
-def test_check_participants_are_added(test_blockchain):
-    test_blockchain.mine_block()
-    test_blockchain.add_transaction('Bob', amount=3.4)
-    test_blockchain.add_transaction('Alice', amount=3.6)
-    test_blockchain.mine_block()
-    assert test_blockchain.participants == set(['Alice', 'Bob', 'Simon'])
-
 def test_get_balance(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    assert test_blockchain.get_balance('Simon') == 13
-    assert test_blockchain.get_balance('Bob') == 3.4
-    assert test_blockchain.get_balance('Alice') == 3.6
+    assert test_blockchain.get_balance() == 13
 
 def test_mining_block_adds_reward(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.mine_block()
-    assert test_blockchain.get_balance('Simon') == 20
+    assert test_blockchain.get_balance() == 20
 
 def test_cannot_send_if_no_balance(test_blockchain):
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
-    assert test_blockchain.get_balance('Bob') == 0
-    assert test_blockchain.get_balance('Alice') == 0
+    assert ('Bob' in repr(test_blockchain.blockchain)) is False
+    assert ('Alice' in repr(test_blockchain.blockchain)) is False
 
 def test_cannot_send_if_transactions_in_queue_are_too_much(test_blockchain):
     test_blockchain.mine_block()

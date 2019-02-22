@@ -9,7 +9,7 @@ import os
 
 @pytest.fixture
 def test_blockchain():
-    test_blockchain = BlockChain('./tests/blockchain.bin')
+    test_blockchain = BlockChain('Simon', './tests/blockchain.bin')
     yield test_blockchain
     if os.path.isfile(test_blockchain.file_location):
         os.remove(test_blockchain.file_location)
