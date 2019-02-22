@@ -6,6 +6,7 @@ import pickle
 
 import hash_utilities
 from block import Block
+from transaction import Transaction
 class BlockChain():
     
     def __init__(self, file_location='./blockchain.bin'):
@@ -40,7 +41,8 @@ class BlockChain():
     def add_transaction(self, recipient, sender=None, amount=1.0):
         if sender is None:
             sender = self.owner
-        transaction = OrderedDict([('sender', sender), ('recipient', recipient), ('amount', amount)])
+        transaction = Transaction(sender, recipient, amount)
+        # transaction = OrderedDict([('sender', sender), ('recipient', recipient), ('amount', amount)])
         if self.verify_transaction(transaction):
             self.open_transactions.append(transaction)
             self.participants.add(sender)
@@ -53,8 +55,9 @@ class BlockChain():
         last_block = self.blockchain[-1]
         hashed_block = hash_utilities.hash_block(last_block)
         proof = self.proof_of_work()
-        reward_transaction = OrderedDict(
-            [('sender', 'MINED'), ('recipient', self.owner), ('amount', self.MINING_REWARD)]) 
+        reward_transaction = Transaction('MINED', self.owner, self.MINING_REWARD)
+        # reward_transaction = OrderedDict(
+            # [('sender', 'MINED'), ('recipient', self.owner), ('amount', self.MINING_REWARD)]) 
         copied_transactions = self.open_transactions[:]
         copied_transactions.append(reward_transaction)
         block = Block(len(self.blockchain), hashed_block, copied_transactions, proof)
@@ -81,17 +84,18 @@ class BlockChain():
         return True
 
     def get_balance(self, participant):
-        tx_sender = [[tx['amount'] for tx in block.transactions if tx['sender'] == participant] for block in self.blockchain]
-        open_tx_sender = [tx['amount'] for tx in self.open_transactions if tx['sender'] == participant]
+        tx_sender = [[tx.amount for tx in block.transactions if tx.sender == participant] for block in self.blockchain]
+        open_tx_sender = [tx.amount for tx in self.open_transactions if tx.sender == participant]
         tx_sender.append(open_tx_sender)
         amount_sent = reduce(lambda x, y: x+sum(y), tx_sender, 0)
-        tx_recipient = [[tx['amount'] for tx in block.transactions if tx['recipient'] == participant] for block in self.blockchain]
+        tx_recipient = [[tx.amount for tx in block.transactions if tx.recipient == participant] for block in self.blockchain]
         amount_received = reduce(lambda x, y: x+sum(y), tx_recipient, 0)
         return amount_received - amount_sent
 
     def verify_transaction(self, transaction):
-        sender_balance = self.get_balance(transaction['sender'])
-        if sender_balance >= transaction['amount']:
+        sender_balance = self.get_balance(transaction.sender)
+        # Make return sender_balance >= trasaction.amount?
+        if sender_balance >= transaction.amount:
             return True
         else:
             return False
@@ -100,7 +104,10 @@ class BlockChain():
         return all([self.verify_transaction(tx) for tx in self.open_transactions])
 
     def valid_proof(self, transactions, last_hash, proof):
-        guess = (str(transactions) + str(last_hash) +str(proof)).encode()
+        print('transactions: {}'.format(transactions))
+        print('last hash: {}'.format(last_hash))
+        print('proof: {}'.format(proof))
+        guess = (str([tx.to_ordered_dict() for tx in transactions]) + str(last_hash) +str(proof)).encode()
         guess_hash = hash_utilities.hash_string_256(guess)
         return guess_hash[0:2] == '00'
 

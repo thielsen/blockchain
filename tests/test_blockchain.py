@@ -1,6 +1,7 @@
 from sample.blockchain import *
 from sample.hash_utilities import *
 from sample.block import *
+from sample.transaction import *
 
 import pytest
 import os
@@ -26,7 +27,7 @@ def test_add_transaction_to_open(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
-    assert test_blockchain.open_transactions == [{'amount': 3.4, 'recipient': 'Bob', 'sender': 'Simon'}, {'amount': 3.6, 'recipient': 'Alice', 'sender': 'Simon'}]
+    assert isinstance(test_blockchain.open_transactions[0], Transaction) is True
 
 def test_mine_block(test_blockchain):
     test_blockchain.mine_block()
@@ -95,13 +96,13 @@ def test_cannot_send_if_transactions_in_queue_are_too_much(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction('Bob', amount=10.0)
     test_blockchain.add_transaction('Alice', amount=10.0)
-    assert test_blockchain.open_transactions ==  [{'amount': 10.0, 'recipient': 'Bob', 'sender': 'Simon'}]
+    assert len(test_blockchain.open_transactions) == 1
 
 def test_invalid_proof(test_blockchain):
-    assert test_blockchain.valid_proof({'index': 1, 'previous_hash': 'b2242851cf5e7216d0bbb01ad9b6659bbca55f43c9ac3e63d0fac318b579c253', 'proof': 91, 'transactions': [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}, 'bb6818b2c40aff99aced646e148ee46e8f52761863875b76f8c45bd9b48484dd', 1) == False
+    assert test_blockchain.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 0) == False
 
 def test_valid_proof(test_blockchain):
-    assert test_blockchain.valid_proof({'index': 1, 'previous_hash': 'b2242851cf5e7216d0bbb01ad9b6659bbca55f43c9ac3e63d0fac318b579c253', 'proof': 91, 'transactions': [{'amount': 10, 'recipient': 'Simon', 'sender': 'MINED'}]}, 'bb6818b2c40aff99aced646e148ee46e8f52761863875b76f8c45bd9b48484dd', 234) == True
+    assert test_blockchain.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 87) == True
 
 # Need to mock this test with hardcoded timestamps as time stamps are changing
 # def test_proof_of_work(test_blockchain):
