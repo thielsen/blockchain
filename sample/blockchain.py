@@ -11,8 +11,7 @@ class BlockChain():
         self.GENESIS_BLOCK = {'previous_hash': '', 
                               'index': 0,
                               'transactions': [],
-                              'proof': 0
-}
+                              'proof': 0}
         self.blockchain = [self.GENESIS_BLOCK]
         self.open_transactions = []
         self.owner = 'Simon'
@@ -30,15 +29,24 @@ class BlockChain():
 
     def load_data(self):
         with open(self.file_location, mode='r') as f:
+            print(self.file_location)
             file_content = f.readlines()
-            self.blockchain = loads(file_content[0])
+            self.blockchain = loads(file_content[0][:-1])
+            updated_blockchain =[]
+            for block in self.blockchain:
+                updated_block = {'previous_hash': block['previous_hash'], 'index': block['index'], 'proof': block['proof'], 'transactions': [OrderedDict([('sender', tx['sender']), ('recipient', tx['recipient']), ('amount', tx['amount'])]) for tx in block['transactions']]}
+                updated_blockchain.append(updated_block)
+            self.blockchain = updated_blockchain
             self.open_transactions = loads(file_content[1])
+            updated_transactions = []
+            for tx in self.open_transactions:
+                updated_transactions = [OrderedDict([('sender', tx['sender']), ('recipient', tx['recipient']), ('amount', tx['amount'])])]
+            self.open_transactions = updated_transactions
 
     def add_transaction(self, recipient, sender=None, amount=1.0):
         if sender is None:
             sender = self.owner
-        transaction = OrderedDict(
-            [('sender', sender), ('recipient', recipient), ('amount', amount)])
+        transaction = OrderedDict([('sender', sender), ('recipient', recipient), ('amount', amount)])
         if self.verify_transaction(transaction):
             self.open_transactions.append(transaction)
             self.participants.add(sender)
@@ -52,7 +60,7 @@ class BlockChain():
         hashed_block = hash_utilities.hash_block(last_block)
         proof = self.proof_of_work()
         reward_transaction = OrderedDict(
-            [('sender', 'MINED'), ('recipient', self.owner), ('amount', self.MINING_REWARD)])
+            [('sender', 'MINED'), ('recipient', self.owner), ('amount', self.MINING_REWARD)]) 
         copied_transactions = self.open_transactions[:]
         copied_transactions.append(reward_transaction)
         block = {'previous_hash': hashed_block, 
@@ -60,8 +68,8 @@ class BlockChain():
                 'transactions': copied_transactions,
                 'proof': proof}
         self.blockchain.append(block)
-        self.save_data()
         self.open_transactions = []
+        self.save_data()
         
 
     def get_last_blockchain_value():

@@ -7,6 +7,7 @@ import os
 def test_blockchain():
     test_blockchain = BlockChain()
     test_blockchain.file_location = './tests/blockchain.txt'
+    print test_blockchain.file_location
     yield test_blockchain
     if os.path.isfile(test_blockchain.file_location):
         os.remove(test_blockchain.file_location)
@@ -30,9 +31,11 @@ def test_add_transaction_to_open(test_blockchain):
 
 def test_mine_block(test_blockchain):
     test_blockchain.mine_block()
+    print test_blockchain.file_location
     test_blockchain.add_transaction('Bob', amount=3.4)
     test_blockchain.add_transaction('Alice', amount=3.6)
     test_blockchain.mine_block()
+    print(test_blockchain.blockchain)
     assert test_blockchain.blockchain == [{'index': 0, 'previous_hash': '', 'proof': 0, 'transactions': []}, {'index': 1, 'previous_hash': 'a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812', 'proof': 267, 'transactions': [OrderedDict([('sender', 'MINED'), ('recipient', 'Simon'), ('amount', 10)])]}, {'index': 2, 'previous_hash': '5f8e32c4d742d8f6238692c4919024faf95f9b574781eb12607acd205d45e0ea', 'proof': 252, 'transactions': [OrderedDict([('sender', 'Simon'), ('recipient', 'Bob'), ('amount', 3.4)]), OrderedDict([('sender', 'Simon'), ('recipient', 'Alice'), ('amount', 3.6)]), OrderedDict([('sender', 'MINED'), ('recipient', 'Simon'), ('amount', 10)])]}]
 
 def test_clear_open_transactions_after_mining(test_blockchain):

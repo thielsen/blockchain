@@ -30,3 +30,17 @@ print(x)
 
 # # output = test_blockchain.valid_proof({'previous_hash': 'fdcd010164e24fe2247e9c6b20e211ab96c0cb7b3ad2da9f3e5feaac47ecc4d1', 'index': 1, 'transactions': [{'sender': 'MINED', 'recipient': 'Simon', 'amount': 10}]} , 'bf8953d506d8467b96da1a2b8b335510ad16be3e45be8e36aacb19ef3bdbb277', 0)
 # # print(output)
+
+
+
+
+  # def load_data(self):
+        # with open(self.file_location, mode='r') as f:
+            # file_content = f.readlines()
+            # self.blockchain = loads(file_content[0][:-1])
+            # updated_blockchain =[]
+            # for block in blockchain:
+            #     updated_block = {'previous_hash': block['previous_hash'], 'index': block['index'], 'proof': block['proof'], 'transactions': [OrderedDict([('sender', tx['sender']), ('recipient', tx['recipient']), ('amount', tx['amount'])]) for tx in block['transactions']]}
+            #     updated_blockchain.append(updated_block)
+            # self.blockchain = updated_blockchain
+            # self.open_transactions = loads(file_content[1])
