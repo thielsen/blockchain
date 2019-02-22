@@ -7,7 +7,7 @@ import pickle
 import hash_utilities
 class BlockChain():
     
-    def __init__(self, file_location):
+    def __init__(self, file_location='./blockchain.bin'):
         self.MINING_REWARD = 10
         self.GENESIS_BLOCK = {'previous_hash': '', 
                               'index': 0,
@@ -18,8 +18,7 @@ class BlockChain():
         self.owner = 'Simon'
         self.participants = {self.owner}
         self.file_location = file_location
-        if os.path.isfile(self.file_location):
-            self.load_data()
+        self.load_data()
 
     def save_data(self):
         with open(self.file_location, mode='wb') as f:
@@ -27,10 +26,13 @@ class BlockChain():
             f.write(pickle.dumps(save_data))
 
     def load_data(self):
-        with open(self.file_location, mode='rb') as f:
-            file_content = pickle.loads(f.read())
-            self.blockchain = file_content['chain']
-            self.open_transactions = file_content['ot']
+        try:
+            with open(self.file_location, mode='rb') as f:
+                file_content = pickle.loads(f.read())
+                self.blockchain = file_content['chain']
+                self.open_transactions = file_content['ot']
+        except IOError:
+            print('Existing blockchain not found')
 
     def add_transaction(self, recipient, sender=None, amount=1.0):
         if sender is None:

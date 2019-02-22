@@ -63,3 +63,4 @@ bin
 pyvenv.cfg
 blockchain.txt
 tests/pytest.ini
+blockchain.bin
