@@ -28,7 +28,7 @@ class BlockChain():
                 save_data = {'chain': self.__blockchain, 'ot': self.__open_transactions}
                 f.write(dumps(save_data))
         except IOError:
-            ('Save error')
+            print('Save error')
 
     def load_data(self):
         try:
@@ -39,12 +39,12 @@ class BlockChain():
         except IOError:
             print('Existing blockchain not found. Initializing...')
 
-    def add_transaction(self, recipient, sender=None, amount=1.0):
+    def add_transaction(self, recipient, signature, sender=None, amount=1.0):
         if sender is None:
             sender = self.node
         if self.node == None:
             return False
-        transaction = Transaction(sender, recipient, amount)
+        transaction = Transaction(sender, recipient, signature, amount)
         if Verify.verify_transaction(transaction, self.get_balance):
             self.__open_transactions.append(transaction)
             self.save_data()
@@ -57,7 +57,7 @@ class BlockChain():
         last_block = self.__blockchain[-1]
         hashed_block = hash_block(last_block)
         proof = self.proof_of_work()
-        reward_transaction = Transaction('MINED', self.node, self.MINING_REWARD)
+        reward_transaction = Transaction('MINED', self.node, '', self.MINING_REWARD)
         copied_transactions = self.__open_transactions[:]
         copied_transactions.append(reward_transaction)
         block = Block(len(self.__blockchain), hashed_block, copied_transactions, proof)

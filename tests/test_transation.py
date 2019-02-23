@@ -5,7 +5,7 @@ from sample.transaction import *
 
 @pytest.fixture
 def test_transaction():
-    test_transaction = Transaction('Test_sender', 'Test_recipient', 99)
+    test_transaction = Transaction('Test_sender', 'Test_recipient', '', 99)
     return test_transaction
 
 def test_to_ordered_dict(test_transaction):

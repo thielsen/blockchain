@@ -48,3 +48,4 @@ class Wallet:
         hash_to_sign = SHA256.new((str(sender) + str(recipient) + str(amount)).encode())
         signature = signer.sign(hash_to_sign)
         return binascii.hexlify(signature).decode()
+        

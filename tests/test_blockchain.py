@@ -26,8 +26,8 @@ def test_blockchain():
 
 def test_add_transaction_to_open(test_blockchain):
     test_blockchain.mine_block()
-    test_blockchain.add_transaction('Bob', amount=3.4)
-    test_blockchain.add_transaction('Alice', amount=3.6)
+    test_blockchain.add_transaction('Bob', '', amount=3.4)
+    test_blockchain.add_transaction('Alice', '', amount=3.6)
 
     assert repr(test_blockchain.view_open_transactions()[0]) == 'Sender: Simon, Recipient: Bob, Amount: 3.4'
     assert repr(test_blockchain.view_open_transactions()[1]) == 'Sender: Simon, Recipient: Alice, Amount: 3.6'
@@ -36,8 +36,8 @@ def test_add_transaction_to_open(test_blockchain):
 
 def test_mine_block(test_blockchain):
     test_blockchain.mine_block()
-    test_blockchain.add_transaction('Bob', amount=3.4)
-    test_blockchain.add_transaction('Alice', amount=3.6)
+    test_blockchain.add_transaction('Bob', '', amount=3.4)
+    test_blockchain.add_transaction('Alice', '', amount=3.6)
     test_blockchain.mine_block()
     assert ('Index: 0' in repr(test_blockchain.view_blockchain()[0])) is True
     assert ('Index: 1' in repr(test_blockchain.view_blockchain()[1])) is True
@@ -51,8 +51,8 @@ def test_clear_open_transactions_after_mining(test_blockchain):
 
 def test_get_balance(test_blockchain):
     test_blockchain.mine_block()
-    test_blockchain.add_transaction('Bob', amount=3.4)
-    test_blockchain.add_transaction('Alice', amount=3.6)
+    test_blockchain.add_transaction('Bob', '', amount=3.4)
+    test_blockchain.add_transaction('Alice', '', amount=3.6)
     test_blockchain.mine_block()
     assert test_blockchain.get_balance() == 13
 
@@ -62,16 +62,16 @@ def test_mining_block_adds_reward(test_blockchain):
     assert test_blockchain.get_balance() == 20
 
 def test_cannot_send_if_no_balance(test_blockchain):
-    test_blockchain.add_transaction('Bob', amount=3.4)
-    test_blockchain.add_transaction('Alice', amount=3.6)
+    test_blockchain.add_transaction('Bob', '', amount=3.4)
+    test_blockchain.add_transaction('Alice', '', amount=3.6)
     test_blockchain.mine_block()
     assert ('Bob' in repr(test_blockchain.view_blockchain())) is False
     assert ('Alice' in repr(test_blockchain.view_blockchain())) is False
 
 def test_cannot_send_if_transactions_in_queue_are_too_much(test_blockchain):
     test_blockchain.mine_block()
-    test_blockchain.add_transaction('Bob', amount=10.0)
-    test_blockchain.add_transaction('Alice', amount=10.0)
+    test_blockchain.add_transaction('Bob', '', amount=10.0)
+    test_blockchain.add_transaction('Alice', '', amount=10.0)
     assert len(test_blockchain.view_open_transactions()) == 1
 
 

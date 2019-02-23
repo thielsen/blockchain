@@ -23,3 +23,4 @@ def test_sign_transaction(test_wallet):
     # Private key changes each time so this does - how can I mock a wallet?
     signed_transaction = test_wallet.sign_transaction('Test_Sender', 'Test_Recipient', 100)
     assert len(signed_transaction) == 256
+    
