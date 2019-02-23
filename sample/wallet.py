@@ -48,4 +48,11 @@ class Wallet:
         hash_to_sign = SHA256.new((str(sender) + str(recipient) + str(amount)).encode())
         signature = signer.sign(hash_to_sign)
         return binascii.hexlify(signature).decode()
-        
+
+    def verify_transaction(self, transaction):
+        if transaction.sender == 'MINING':
+            return True
+        public_key = RSA.importKey(binascii.unhexlify(transaction.sender))
+        verifier = PKCS1_v1_5.new(public_key)
+        hash_to_verify = SHA256.new((str(transaction.sender) + str(transaction.recipient) + str(transaction.amount)).encode())
+        return verifier.verify(hash_to_verify, binascii.unhexlify(transaction.signature))
