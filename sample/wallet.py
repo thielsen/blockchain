@@ -13,16 +13,21 @@ class Wallet:
         private_key, public_key = self.generate_keys()
         self.private_key = private_key
         self.public_key = public_key
-        try:
-            with open('wallet.txt', mode='w') as f:
-                f.write(self.private_key)
-                f.write('\n')
-                f.write(self.public_key)
-        except IOError:
-            ('Save error')
+        
+    
+    def save_keys(self):
+        if self.public_key != None and self.private_key != None:
+            try:
+                with open('wallet.txt', mode='w') as f:
+                    f.write(self.private_key)
+                    f.write('\n')
+                    f.write(self.public_key)
+            except IOError:
+                ('Save error')
+        else:
+            print('No keys to save')
     
     def load_keys(self):
-        self.public_key = public_key
         try:
             with open('wallet.txt', mode='r') as f:
                 keys = f.readlines()
