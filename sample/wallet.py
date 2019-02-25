@@ -52,8 +52,6 @@ class Wallet:
 
     @staticmethod
     def verify_transaction(transaction):
-        if transaction.sender == 'MINED':
-            return True
         verifier = PKCS1_v1_5.new(RSA.importKey(binascii.unhexlify(transaction.sender)))
         hash_to_verify = SHA256.new((str(transaction.sender) + str(transaction.recipient) + str(transaction.amount)).encode())
         return verifier.verify(hash_to_verify, binascii.unhexlify(transaction.signature))
