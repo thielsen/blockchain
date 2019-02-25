@@ -17,32 +17,33 @@ class Wallet:
         private_key, public_key = self.generate_keys()
         self.private_key = private_key
         self.public_key = public_key
-        
+
     def save_keys(self):
-        if self.public_key != None and self.private_key != None:
+        if self.public_key is not None and self.private_key is not None:
             try:
-                with open('wallet.txt', mode='w') as f:
-                    f.write(self.private_key)
-                    f.write('\n')
-                    f.write(self.public_key)
+                with open('wallet.txt', mode='w') as file_line:
+                    file_line.write(self.private_key)
+                    file_line.write('\n')
+                    file_line.write(self.public_key)
             except IOError:
-                ('Save error')
+                print('Save error')
         else:
             print('No keys to save')
-    
+
     def load_keys(self, wallet_file='wallet.txt'):
         try:
-            with open(wallet_file, mode='r') as f:
-                keys = f.readlines()
+            with open(wallet_file, mode='r') as file_line:
+                keys = file_line.readlines()
                 self.private_key = keys[0][:-1]
                 self.public_key = keys[1]
         except IOError:
-            ('Keys not found..')
+            print('Keys not found..')
 
     def generate_keys(self):
         private_key = RSA.generate(1024, Crypto.Random.new().read)
         public_key = private_key.publickey()
-        return (binascii.hexlify(private_key.exportKey(format='DER')).decode('ascii'), binascii.hexlify(public_key.exportKey(format='DER')).decode('ascii'))
+        return (binascii.hexlify(private_key.exportKey(format='DER')).decode('ascii'),
+                binascii.hexlify(public_key.exportKey(format='DER')).decode('ascii'))
 
     def sign_transaction(self, sender, recipient, amount):
         signer = PKCS1_v1_5.new(RSA.importKey(binascii.unhexlify(self.private_key)))
@@ -53,5 +54,7 @@ class Wallet:
     @staticmethod
     def verify_transaction(transaction):
         verifier = PKCS1_v1_5.new(RSA.importKey(binascii.unhexlify(transaction.sender)))
-        hash_to_verify = SHA256.new((str(transaction.sender) + str(transaction.recipient) + str(transaction.amount)).encode())
+        hash_to_verify = SHA256.new((str(transaction.sender)
+                                     + str(transaction.recipient)
+                                     + str(transaction.amount)).encode())
         return verifier.verify(hash_to_verify, binascii.unhexlify(transaction.signature))

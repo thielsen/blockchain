@@ -3,10 +3,10 @@ import os
 import pytest
 
 
-from sample.blockchain import *
-from sample.block import *
-from sample.transaction import *
-from sample.verify import *
+from sample.blockchain import BlockChain
+from sample.block import Block
+from sample.transaction import Transaction
+from sample.verify import Verify
 
 BOB_PRIVATE = '3082025d02010002818100b91c16d15e43750fda241ffc51d770b90cba48aa4594ad9ded911970df3f95044a9404407c637b38bbe21f802502b2307f2d62a69657365c86c5cc9c915b2a9e27e1ee3951d18ec8201cb48362d25536d70919ee219a118ad3c9c683f340db28dd39bfcad00939f2d39c566bd0e7417aab85463f89ef4c2d2816789a35e1998302030100010281801998db44e7728f90fa1acdbb7ffbb93035a4dae084cfaaf4704204d11965faeec57b535d3176363761afc2a85f35d0bb2912f715cf2b4f2e9b4a65e16eae3b25b7d9235361c702807c96aa23f4c9862685b2ca77105d4c6ded54b12940c8a3e64ef669cb8be77dd8547e8c315b6a72a072bc88b258cdbef01dc0434cce36d559024100bd94bfbfe5659aa607b3b55d5928ae6d4af60b05736e6c4894dfb6f1b048783e45d55be8563dd12592fa8cfabaa327a730bf4f7733195763126c01a6b6b53b19024100f9f6502c875fa4c50e9e2ae6d930709eb2e492326627c806a9ace012caf5e198e31afad0fc049e8559dc740928938fe488021405dd2af66ae58ffe9c8ff2e8fb0240395f1f9c3a16c27346576b2661c9fee7524d1d4ebbfd09c5f94fae747bcda29dedd240ab12164909deedf5e616bf334bd463c0efa8c61d7cfce134aab8162659024100bcfaa82ac23e61484a80f2568da5bdbf7de8a94f49449249d74648326d17f073b25fd778e0d06d38cc738b96d1029f2b5c5895e2c90f8e35cb514e61f7c2e2b9024100ab4b0152c95ccd2492c60457699df27f35aa7183245d737bc6bb7d5e0731cd9c6cb7ba965cd8d4778ced651b13eae5532b89194ac7041863a8475769136271e5'
 BOB_PUBLIC = '30819f300d06092a864886f70d010101050003818d0030818902818100b91c16d15e43750fda241ffc51d770b90cba48aa4594ad9ded911970df3f95044a9404407c637b38bbe21f802502b2307f2d62a69657365c86c5cc9c915b2a9e27e1ee3951d18ec8201cb48362d25536d70919ee219a118ad3c9c683f340db28dd39bfcad00939f2d39c566bd0e7417aab85463f89ef4c2d2816789a35e199830203010001'
@@ -25,13 +25,13 @@ def test_blockchain():
         os.remove(test_blockchain.file_location)
 
 def test_invalid_proof(test_blockchain):
-    assert Verify.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 0) == False
+    assert not Verify.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 0)
 
 def test_valid_proof(test_blockchain):
-    assert Verify.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 87) == True
+    assert Verify.valid_proof([], 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d', 87)
 
 def test_verify_chain(test_blockchain):
-    assert Verify.verify_chain(test_blockchain.view_blockchain()) == True
+    assert Verify.verify_chain(test_blockchain.view_blockchain())
 
 def test_verify_bad_chain_with_false_transaction(test_blockchain):
     test_blockchain.mine_block()
@@ -40,7 +40,7 @@ def test_verify_bad_chain_with_false_transaction(test_blockchain):
     test_blockchain.mine_block()
     test_block = Block(0, '', [{'sender': 'poorfool', 'recipient': 'badactor', 'amount': 1000.0}], 0)
     test_blockchain._BlockChain__blockchain[1] = test_block
-    assert Verify.verify_chain(test_blockchain.view_blockchain()) == False
+    assert not Verify.verify_chain(test_blockchain.view_blockchain())
 
 def test_verify_bad_chain_with_invalid_proof(test_blockchain):
     test_blockchain.mine_block()
@@ -49,4 +49,4 @@ def test_verify_bad_chain_with_invalid_proof(test_blockchain):
     test_blockchain.mine_block()
     test_block = Block(1, 'a93bc01ba42854e03622a737f6b84a9d43a5f0af42c5ffcb94de0007ff3e6812', [{'amount': 10, 'recipient': SIMON_PUBLIC, 'sender': 'MINED'}], 268)
     test_blockchain._BlockChain__blockchain[1] = test_block
-    assert Verify.verify_chain(test_blockchain.view_blockchain()) == False
+    assert not Verify.verify_chain(test_blockchain.view_blockchain())

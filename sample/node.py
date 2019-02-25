@@ -31,7 +31,10 @@ class Node:
                 tx_data = self.get_transaction_value()
                 recipient, amount = tx_data
                 signature = self.wallet.sign_transaction(self.wallet.public_key, recipient, amount)
-                if self.blockchain.add_transaction(recipient, signature, self.wallet.public_key, amount=amount):
+                if self.blockchain.add_transaction(recipient,
+                                                   signature,
+                                                   self.wallet.public_key,
+                                                   amount=amount):
                     print('Transaction added')
                 else:
                     print('Transaction failed')
@@ -41,7 +44,8 @@ class Node:
             elif user_choice == 3:
                 self.print_blockchain_element()
             elif user_choice == 4:
-                if Verify.verify_transactions(self.blockchain.view_open_transactions(), self.blockchain.get_balance):
+                if Verify.verify_transactions(self.blockchain.view_open_transactions(),
+                                              self.blockchain.get_balance):
                     print('Verified')
                 else:
                     print('Invalid transactions')
@@ -60,7 +64,8 @@ class Node:
             if not Verify.verify_chain(self.blockchain.view_blockchain()):
                 print('Invalid chain')
                 waiting_for_input = False
-            print('Balance of {}: {:6.2f}'.format(self.wallet.public_key, self.blockchain.get_balance()))
+            print('Balance of {}: {:6.2f}'.format(self.wallet.public_key, 
+                                                  self.blockchain.get_balance()))
         else:
             print('User left')
         print('Done')
@@ -79,4 +84,3 @@ class Node:
             print(block)
         else:
             print('-' * 20)
-

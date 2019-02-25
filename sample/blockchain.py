@@ -10,14 +10,14 @@ class BlockChain():
 
     MINING_REWARD = 10
     GENESIS_BLOCK = Block(0, '', [], 0, 0)
-    
+
     def __init__(self, node_id, file_location='./blockchain.bin'):
         self.__blockchain = [BlockChain.GENESIS_BLOCK]
         self.__open_transactions = []
         self.file_location = file_location
         self.load_data()
         self.node = node_id
-    
+
     def view_blockchain(self):
         return self.__blockchain[:]
 
@@ -44,7 +44,7 @@ class BlockChain():
     def add_transaction(self, recipient, signature, sender=None, amount=1.0):
         if sender is None:
             sender = self.node
-        if self.node == None:
+        if self.node is None:
             return False
         transaction = Transaction(sender, recipient, signature, amount)
         if Verify.verify_transaction(transaction, self.get_balance):
@@ -54,7 +54,7 @@ class BlockChain():
         return False
 
     def mine_block(self):
-        if self.node == None:
+        if self.node is None:
             return False
         last_block = self.__blockchain[-1]
         hashed_block = hash_block(last_block)
@@ -70,18 +70,24 @@ class BlockChain():
         self.__open_transactions = []
         self.save_data()
         return True
-        
+
     def get_last_blockchain_value(self):
         if len(self.__blockchain) < 1:
             return None
         return self.__blockchain[-1]
 
     def get_balance(self):
-        tx_sender = [[tx.amount for tx in block.transactions if tx.sender == self.node] for block in self.__blockchain]
+        tx_sender = [
+            [tx.amount for tx in block.transactions if tx.sender == self.node]
+            for block in self.__blockchain
+            ]
         open_tx_sender = [tx.amount for tx in self.__open_transactions if tx.sender == self.node]
         tx_sender.append(open_tx_sender)
         amount_sent = reduce(lambda x, y: x+sum(y), tx_sender, 0)
-        tx_recipient = [[tx.amount for tx in block.transactions if tx.recipient == self.node] for block in self.__blockchain]
+        tx_recipient = [
+            [tx.amount for tx in block.transactions if tx.recipient == self.node] 
+            for block in self.__blockchain
+            ]
         amount_received = reduce(lambda x, y: x+sum(y), tx_recipient, 0)
         return amount_received - amount_sent
 
