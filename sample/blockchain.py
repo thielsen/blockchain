@@ -7,11 +7,12 @@ from sample.transaction import Transaction
 from sample.verify import Verify
 from sample.wallet import Wallet
 class BlockChain():
+
+    MINING_REWARD = 10
+    GENESIS_BLOCK = Block(0, '', [], 0, 0)
     
     def __init__(self, node_id, file_location='./blockchain.bin'):
-        self.MINING_REWARD = 10
-        self.GENESIS_BLOCK = Block(0, '', [], 0, 0)
-        self.__blockchain = [self.GENESIS_BLOCK]
+        self.__blockchain = [BlockChain.GENESIS_BLOCK]
         self.__open_transactions = []
         self.file_location = file_location
         self.load_data()
@@ -58,7 +59,7 @@ class BlockChain():
         last_block = self.__blockchain[-1]
         hashed_block = hash_block(last_block)
         proof = self.proof_of_work()
-        reward_transaction = Transaction('MINED', self.node, '', self.MINING_REWARD)
+        reward_transaction = Transaction('MINED', self.node, '', BlockChain.MINING_REWARD)
         copied_transactions = self.__open_transactions[:]
         for tx in copied_transactions:
             if not Wallet.verify_transaction(tx):
