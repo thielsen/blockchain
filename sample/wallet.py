@@ -7,16 +7,17 @@ import pytest
 
 class Wallet:
 
-    def __init__(self):
+    def __init__(self, wallet_file='wallet.txt'):
         self.private_key = None
         self.public_key = None
+        self.load_keys(wallet_file)
+        print(self.private_key)
 
     def create_keys(self):
         private_key, public_key = self.generate_keys()
         self.private_key = private_key
         self.public_key = public_key
         
-    
     def save_keys(self):
         if self.public_key != None and self.private_key != None:
             try:
@@ -29,9 +30,9 @@ class Wallet:
         else:
             print('No keys to save')
     
-    def load_keys(self):
+    def load_keys(self, wallet_file='wallet.txt'):
         try:
-            with open('wallet.txt', mode='r') as f:
+            with open(wallet_file, mode='r') as f:
                 keys = f.readlines()
                 self.private_key = keys[0][:-1]
                 self.public_key = keys[1]
@@ -51,7 +52,7 @@ class Wallet:
 
     @staticmethod
     def verify_transaction(transaction):
-        if transaction.sender == 'MINING':
+        if transaction.sender == 'MINED':
             return True
         verifier = PKCS1_v1_5.new(RSA.importKey(binascii.unhexlify(transaction.sender)))
         hash_to_verify = SHA256.new((str(transaction.sender) + str(transaction.recipient) + str(transaction.amount)).encode())

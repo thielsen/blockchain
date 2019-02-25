@@ -34,11 +34,6 @@ def test_sign_transaction(test_wallet):
     signed_transaction = test_wallet.sign_transaction(ALICE_PUBLIC, BOB_PUBLIC, 100)
     assert len(signed_transaction) == 256
 
-def test_verify_signed_transaction(test_wallet):
-    # Need to looke to mocking this and moving this to integration test
-    signed_transaction = test_wallet.sign_transaction(ALICE_PUBLIC, BOB_PUBLIC, 100)
-    verified_transaction  = Transaction(ALICE_PUBLIC, BOB_PUBLIC, signed_transaction, 100)
-    result = Wallet.verify_transaction(verified_transaction)
-    assert result == True
+#Mock a test for verify transaction - covered by integration test for now
 
 

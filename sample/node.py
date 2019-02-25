@@ -5,10 +5,14 @@ from sample.wallet import Wallet
 
 class Node:
 
-    def __init__(self):
-        self.owner = Wallet()
-        self.owner.create_keys()
-        self.blockchain = BlockChain(self.owner.public_key)
+    def __init__(self, wallet=None, blockchain=None):
+        if wallet is None:
+            wallet = Wallet()
+            wallet.create_keys()
+        self.wallet = wallet
+        if blockchain is None:
+            blockchain = BlockChain(self.wallet.public_key)
+        self.blockchain = blockchain
 
     def listen_for_input(self):
         waiting_for_input = True
@@ -26,8 +30,8 @@ class Node:
             if user_choice == 1:
                 tx_data = self.get_transaction_value()
                 recipient, amount = tx_data
-                signature = self.owner.sign_transaction(self.owner.public_key, recipient, amount)
-                if self.blockchain.add_transaction(recipient, signature, self.owner.public_key, amount=amount):
+                signature = self.wallet.sign_transaction(self.wallet.public_key, recipient, amount)
+                if self.blockchain.add_transaction(recipient, signature, self.wallet.public_key, amount=amount):
                     print('Transaction added')
                 else:
                     print('Transaction failed')
@@ -42,13 +46,13 @@ class Node:
                 else:
                     print('Invalid transactions')
             elif user_choice == 5:
-                self.owner.create_keys()
-                self.blockchain = BlockChain(self.owner.public_key)
+                self.wallet.create_keys()
+                self.blockchain = BlockChain(self.wallet.public_key)
             elif user_choice == 6:
-                self.owner.load_keys()
-                self.blockchain = BlockChain(self.owner.public_key)
+                self.wallet.load_keys()
+                self.blockchain = BlockChain(self.wallet.public_key)
             elif user_choice == 7:
-                self.owner.save_keys()
+                self.wallet.save_keys()
             elif user_choice == 0:
                 waiting_for_input = False
             else:
@@ -56,7 +60,7 @@ class Node:
             if not Verify.verify_chain(self.blockchain.view_blockchain()):
                 print('Invalid chain')
                 waiting_for_input = False
-            print('Balance of {}: {:6.2f}'.format(self.owner.public_key, self.blockchain.get_balance()))
+            print('Balance of {}: {:6.2f}'.format(self.wallet.public_key, self.blockchain.get_balance()))
         else:
             print('User left')
         print('Done')
