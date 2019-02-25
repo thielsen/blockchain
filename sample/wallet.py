@@ -11,7 +11,6 @@ class Wallet:
         self.private_key = None
         self.public_key = None
         self.load_keys(wallet_file)
-        print(self.private_key)
 
     def create_keys(self):
         private_key, public_key = self.generate_keys()
