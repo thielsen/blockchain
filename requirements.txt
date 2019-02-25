@@ -7,5 +7,6 @@ pluggy==0.8.1
 py==1.8.0
 pycryptodome==3.7.3
 pytest==4.3.0
+pytest-cov==2.6.1
 setuptools==40.6.2
 six==1.12.0
