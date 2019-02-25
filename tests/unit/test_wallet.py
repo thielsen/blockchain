@@ -34,4 +34,3 @@ def test_sign_transaction(test_wallet):
     assert len(signed_transaction) == 256
 
 #Mock a test for verify transaction - covered by integration test for now
-

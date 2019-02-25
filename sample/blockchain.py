@@ -26,16 +26,16 @@ class BlockChain():
 
     def save_data(self):
         try:
-            with open(self.file_location, mode='wb') as f:
+            with open(self.file_location, mode='wb') as file_line:
                 save_data = {'chain': self.__blockchain, 'ot': self.__open_transactions}
-                f.write(dumps(save_data))
+                file_line.write(dumps(save_data))
         except IOError:
             print('Save error')
 
     def load_data(self):
         try:
-            with open(self.file_location, mode='rb') as f:
-                file_content = loads(f.read())
+            with open(self.file_location, mode='rb') as file_line:
+                file_content = loads(file_line.read())
                 self.__blockchain = file_content['chain']
                 self.__open_transactions = file_content['ot']
         except IOError:
@@ -61,8 +61,8 @@ class BlockChain():
         proof = self.proof_of_work()
         reward_transaction = Transaction('MINED', self.node, '', BlockChain.MINING_REWARD)
         copied_transactions = self.__open_transactions[:]
-        for tx in copied_transactions:
-            if not Wallet.verify_transaction(tx):
+        for transaction in copied_transactions:
+            if not Wallet.verify_transaction(transaction):
                 return False
         copied_transactions.append(reward_transaction)
         block = Block(len(self.__blockchain), hashed_block, copied_transactions, proof)
@@ -85,7 +85,7 @@ class BlockChain():
         tx_sender.append(open_tx_sender)
         amount_sent = reduce(lambda x, y: x+sum(y), tx_sender, 0)
         tx_recipient = [
-            [tx.amount for tx in block.transactions if tx.recipient == self.node] 
+            [tx.amount for tx in block.transactions if tx.recipient == self.node]
             for block in self.__blockchain
             ]
         amount_received = reduce(lambda x, y: x+sum(y), tx_recipient, 0)

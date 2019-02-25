@@ -64,7 +64,7 @@ class Node:
             if not Verify.verify_chain(self.blockchain.view_blockchain()):
                 print('Invalid chain')
                 waiting_for_input = False
-            print('Balance of {}: {:6.2f}'.format(self.wallet.public_key, 
+            print('Balance of {}: {:6.2f}'.format(self.wallet.public_key,
                                                   self.blockchain.get_balance()))
         else:
             print('User left')
