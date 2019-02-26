@@ -1,20 +1,23 @@
 from flask import Flask
 from flask_cors import CORS
-from wallet import Wallet
+from .wallet import Wallet
 
-app = Flask(__name__)
 wallet = Wallet()
-CORS(app)
 
-@app.route('/', methods=['GET'])
-def get_ui():
-    return 'Working'
+def create_app(config=None):
+    app = Flask(__name__)
+    CORS(app)
 
-@app.route('/blockchain', methods=['GET'])
+    @app.route('/', methods=['GET'])
+    def get_ui():
+        return 'Working'
+
+    @app.route('/blockchain', methods=['GET'])
     def get_chain():
-    
+        pass
 
-print(__name__)
+    return app
 
 if __name__ == '__main__':
+    app=create_app()
     app.run(host='0.0.0.0', port=4000)

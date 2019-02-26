@@ -14,17 +14,16 @@ class Node:
             blockchain = BlockChain(self.wallet.public_key)
         self.blockchain = blockchain
 
-
     def print_menu(self):
-            print('Choose')
-            print('1. Add a transaction')
-            print('2. Mine a new block')
-            print('3. View blockchain')
-            print('4. Verify all transactions in queue')
-            print('5. Create wallet')
-            print('6. Load wallet')
-            print('7. Save keys')
-            print('0. Quit')
+        print('Choose')
+        print('1. Add a transaction')
+        print('2. Mine a new block')
+        print('3. View blockchain')
+        print('4. Verify all transactions in queue')
+        print('5. Create wallet')
+        print('6. Load wallet')
+        print('7. Save keys')
+        print('0. Quit')
 
     def listen_for_input(self):
         waiting_for_input = True
