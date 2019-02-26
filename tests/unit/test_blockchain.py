@@ -1,6 +1,6 @@
 from pickle import loads
-import pytest
 import os
+import pytest
 
 from sample.blockchain import BlockChain
 from sample.block import Block
@@ -30,19 +30,19 @@ def test_blockchain():
 # def test_get_last_blockchain_value():
 #     add_transaction(12.4, get_last_blockchain_value())
 #     add_transaction(5.6, get_last_blockchain_value())
-#     assert get_last_blockchain_value() == [[[[[1], 1], 5], 12.4], 5.6] 
+#     assert get_last_blockchain_value() == [[[[[1], 1], 5], 12.4], 5.6]
 
 def test_mine_block(test_blockchain):
     test_blockchain.mine_block()
     test_blockchain.add_transaction(BOB_PUBLIC, SIMON_PUBLIC, amount=3.4)
     test_blockchain.add_transaction(ALICE_PUBLIC, SIMON_PUBLIC, amount=3.6)
     test_blockchain.mine_block()
-    assert ("{'index': 0" in repr(test_blockchain.view_blockchain()[0]))
-    assert ("{'index': 1" in repr(test_blockchain.view_blockchain()[1]))
-    assert ("{'index': 2" in repr(test_blockchain.view_blockchain()[2]))
-    assert (isinstance(test_blockchain.view_blockchain()[0], Block))
-    assert (isinstance(test_blockchain.view_blockchain()[1], Block))
-    assert (isinstance(test_blockchain.view_blockchain()[2], Block))
+    assert "{'index': 0" in repr(test_blockchain.view_blockchain()[0])
+    assert "{'index': 1" in repr(test_blockchain.view_blockchain()[1])
+    assert "{'index': 2" in repr(test_blockchain.view_blockchain()[2])
+    assert isinstance(test_blockchain.view_blockchain()[0], Block)
+    assert isinstance(test_blockchain.view_blockchain()[1], Block)
+    assert isinstance(test_blockchain.view_blockchain()[2], Block)
 
 def test_clear_open_transactions_after_mining(test_blockchain):
     assert test_blockchain.view_open_transactions() == []
@@ -56,8 +56,8 @@ def test_cannot_send_if_no_balance(test_blockchain):
     test_blockchain.add_transaction(BOB_PUBLIC, SIMON_PUBLIC, amount=3.4)
     test_blockchain.add_transaction(ALICE_PUBLIC, SIMON_PUBLIC, amount=3.6)
     test_blockchain.mine_block()
-    assert not (BOB_PUBLIC in repr(test_blockchain.view_blockchain()))
-    assert not (ALICE_PUBLIC in repr(test_blockchain.view_blockchain()))
+    assert not BOB_PUBLIC in repr(test_blockchain.view_blockchain())
+    assert not ALICE_PUBLIC in repr(test_blockchain.view_blockchain())
 
 
 
@@ -71,12 +71,12 @@ def test_cannot_send_if_no_balance(test_blockchain):
 
 def test_create_file(test_blockchain):
     test_blockchain.mine_block()
-    with open(test_blockchain.file_location, mode='rb') as f:
-        file_content = loads(f.read())
+    with open(test_blockchain.file_location, mode='rb') as file_line:
+        file_content = loads(file_line.read())
     assert file_content['ot'] == []
     assert "{'index': 0" in repr(file_content['chain'][0])
     assert "{'index': 1" in repr(file_content['chain'][1])
-    assert (isinstance(file_content['chain'][0], Block))
-    assert (isinstance(file_content['chain'][1], Block))
+    assert isinstance(file_content['chain'][0], Block)
+    assert isinstance(file_content['chain'][1], Block)
 
 # def test_load_data_on_startup

@@ -29,12 +29,7 @@ class Node:
             user_choice = self.get_user_choice()
             if user_choice == 1:
                 tx_data = self.get_transaction_value()
-                recipient, amount = tx_data
-                signature = self.wallet.sign_transaction(self.wallet.public_key, recipient, amount)
-                if self.blockchain.add_transaction(recipient,
-                                                   signature,
-                                                   self.wallet.public_key,
-                                                   amount=amount):
+                if self.submit_transaction(tx_data):
                     print('Transaction added')
                 else:
                     print('Transaction failed')
@@ -84,3 +79,11 @@ class Node:
             print(block)
         else:
             print('-' * 20)
+
+    def submit_transaction(self, tx_data):
+        recipient, amount = tx_data
+        signature = self.wallet.sign_transaction(self.wallet.public_key, recipient, amount)
+        return self.blockchain.add_transaction(recipient,
+                                               signature,
+                                               self.wallet.public_key,
+                                               amount=amount)

@@ -72,7 +72,7 @@ class BlockChain():
         return True
 
     def get_last_blockchain_value(self):
-        if len(self.__blockchain) < 1:
+        if not self.__blockchain:
             return None
         return self.__blockchain[-1]
 
