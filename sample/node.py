@@ -14,9 +14,8 @@ class Node:
             blockchain = BlockChain(self.wallet.public_key)
         self.blockchain = blockchain
 
-    def listen_for_input(self):
-        waiting_for_input = True
-        while waiting_for_input:
+
+    def print_menu(self):
             print('Choose')
             print('1. Add a transaction')
             print('2. Mine a new block')
@@ -26,6 +25,11 @@ class Node:
             print('6. Load wallet')
             print('7. Save keys')
             print('0. Quit')
+
+    def listen_for_input(self):
+        waiting_for_input = True
+        while waiting_for_input:
+            self.print_menu()
             user_choice = self.get_user_choice()
             if user_choice == 1:
                 tx_data = self.get_transaction_value()

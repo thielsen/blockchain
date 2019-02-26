@@ -71,10 +71,12 @@ class BlockChain():
         self.save_data()
         return True
 
-    def get_last_blockchain_value(self):
-        if not self.__blockchain:
-            return None
-        return self.__blockchain[-1]
+    # def get_last_blockchain_value(self):
+    #     value = None if not self.__blockchain else self.__blockchain[-1]
+    #     return value
+        # if not self.__blockchain:
+        #     return None
+        # return self.__blockchain[-1]
 
     def get_balance(self):
         tx_sender = [
