@@ -10,8 +10,17 @@ def test_client():
     ctx.push()
     yield testing_client
 
-def test_example(test_client):
+def test_home_page(test_client):
     response = test_client.get("/")
-    print(response.__dict__)
     assert response.status_code == 200
     assert b"Working" in response.data
+
+def test_blockchain(test_client):
+    response = test_client.get("/blockchain")
+    #add assert for json with test data
+    assert response.status_code == 200
+
+def test_blockchain(test_client):
+    response = test_client.post("/mine")
+    #add assert for json with test data
+    assert response.status_code == 201

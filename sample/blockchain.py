@@ -55,7 +55,7 @@ class BlockChain():
 
     def mine_block(self):
         if self.node is None:
-            return False
+            return None
         last_block = self.__blockchain[-1]
         hashed_block = hash_block(last_block)
         proof = self.proof_of_work()
@@ -63,13 +63,13 @@ class BlockChain():
         copied_transactions = self.__open_transactions[:]
         for transaction in copied_transactions:
             if not Wallet.verify_transaction(transaction):
-                return False
+                return None
         copied_transactions.append(reward_transaction)
         block = Block(len(self.__blockchain), hashed_block, copied_transactions, proof)
         self.__blockchain.append(block)
         self.__open_transactions = []
         self.save_data()
-        return True
+        return block
 
     # def get_last_blockchain_value(self):
     #     value = None if not self.__blockchain else self.__blockchain[-1]

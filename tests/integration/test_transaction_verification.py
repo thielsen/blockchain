@@ -56,7 +56,6 @@ def test_add_transaction_to_open():
     alice_node.blockchain.mine_block()
     alice_blockchain.add_transaction(BOB_PUBLIC, alice_signing, amount=3.4)
     alice_blockchain.add_transaction(BOB_PUBLIC, alice_signing, amount=3.4)
-    print(alice_blockchain.view_open_transactions())
     assert repr(alice_blockchain.view_open_transactions()[0]) == 'Sender: {}, Recipient: {}, Amount: 3.4'.format(ALICE_PUBLIC, BOB_PUBLIC)
     assert repr(alice_blockchain.view_open_transactions()[1]) == 'Sender: {}, Recipient: {}, Amount: 3.4'.format(ALICE_PUBLIC, BOB_PUBLIC)
     assert isinstance(alice_blockchain.view_open_transactions()[0], Transaction) is True
