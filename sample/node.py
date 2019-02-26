@@ -10,6 +10,10 @@ CORS(app)
 def get_ui():
     return 'Working'
 
+@app.route('/blockchain', methods=['GET'])
+    def get_chain():
+    
+
 print(__name__)
 
 if __name__ == '__main__':
