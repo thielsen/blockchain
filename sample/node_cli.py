@@ -64,6 +64,7 @@ class Node:
                 waiting_for_input = False
             print('Balance of {}: {:6.2f}'.format(self.wallet.public_key,
                                                   self.blockchain.get_balance()))
+            break
         else:
             print('User left')
         print('Done')
@@ -80,6 +81,7 @@ class Node:
         for block in self.blockchain.view_blockchain():
             print('Outputting Block')
             print(block)
+            break
         else:
             print('-' * 20)
 

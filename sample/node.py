@@ -20,8 +20,8 @@ def create_app(config=None):
         dict_chain = [block.__dict__.copy() for block in chain]
         for dict_block in dict_chain:
             dict_block['transactions'] = [tx.__dict__ for tx in dict_block['transactions']]
-        return jsonify(dict_chain),200
-    
+        return jsonify(dict_chain), 200
+
     @app.route('/mine', methods=['POST'])
     def mine_block():
         block = blockchain.mine_block()
@@ -43,5 +43,5 @@ def create_app(config=None):
     return app
 
 if __name__ == '__main__':
-    app=create_app()
+    app = create_app()
     app.run(host='0.0.0.0', port=4000)
