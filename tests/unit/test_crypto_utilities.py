@@ -2,7 +2,7 @@
 import pytest
 
 from sample.block import Block
-from sample.hash_utilities import hash_block, hash_string_256
+from sample.crypto_utilities import hash_block, hash_string_256
 
 def test_hash_block():
     # Try and get this working with a double using doubles and an initial setup       

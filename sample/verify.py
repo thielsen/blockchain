@@ -1,4 +1,4 @@
-from sample.hash_utilities import hash_block, hash_string_256
+from sample.crypto_utilities import hash_block, hash_string_256
 from sample.wallet import Wallet
 class Verify:
 

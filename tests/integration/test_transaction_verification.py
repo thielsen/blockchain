@@ -2,7 +2,7 @@ import pytest
 import os
 
 from sample.blockchain import *
-from sample.hash_utilities import *
+from sample.crypto_utilities import *
 from sample.block import *
 from sample.transaction import *
 from sample.node_cli import *

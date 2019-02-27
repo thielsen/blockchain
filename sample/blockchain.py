@@ -1,7 +1,7 @@
 from functools import reduce
 from pickle import loads, dumps
 
-from sample.hash_utilities import hash_block
+from sample.crypto_utilities import hash_block
 from sample.block import Block
 from sample.transaction import Transaction
 from sample.verify import Verify
