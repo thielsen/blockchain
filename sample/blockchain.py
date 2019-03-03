@@ -79,6 +79,8 @@ class BlockChain():
         # return self.__blockchain[-1]
 
     def get_balance(self):
+        if self.node == None:
+            return None
         tx_sender = [
             [tx.amount for tx in block.transactions if tx.sender == self.node]
             for block in self.__blockchain

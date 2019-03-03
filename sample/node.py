@@ -17,7 +17,8 @@ def create_app(config=None):
         if wallet.save_keys():
             response =  {
                 'public_key': wallet.public_key,
-                'private_key': wallet.private_key
+                'private_key': wallet.private_key,
+                'balance': get_balance()
             }
             return jsonify(response), 201
         else:
@@ -31,12 +32,29 @@ def create_app(config=None):
         if wallet.load_keys():
             response =  {
                 'public_key': wallet.public_key,
-                'private_key': wallet.private_key
+                'private_key': wallet.private_key,
+                'balance': get_balance()
             }
             return jsonify(response), 201
         else:
             response = {
                 'message': 'Failed'
+            }
+            return jsonify(response), 500
+    
+    @app.route('/balance', methods=['GET'])
+    def get_balance():
+        balance = blockchain.get_balance()
+        if balance is not None:
+            response = {
+                'message': 'Success',
+                'balance': balance
+            }
+            return jsonify(response), 200
+        else:
+            response = {
+                'message': 'failed',
+                'wallet': wallet.public_key is not None
             }
             return jsonify(response), 500
 
@@ -60,7 +78,8 @@ def create_app(config=None):
             dict_block['transactions'] = [tx.__dict__ for tx in dict_block['transactions']]
             success_response = {
                 'message': 'Mining succeeded',
-                'block': dict_block
+                'block': dict_block,
+                'balance': blockchain.get_balance()
             }
             return jsonify(success_response), 201
         else:
