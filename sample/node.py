@@ -99,6 +99,12 @@ def create_app(config=None):
     @app.route('/', methods=['GET'])
     def get_ui():
         return 'Working'
+    
+    @app.route('/transactions', methods=['GET'])
+    def view_open_transactions():
+        transactions = blockchain.view_open_transactions()
+        dict_transactions = [transaction.__dict__ for transaction in transactions]
+        return jsonify(dict_transactions), 200
 
     @app.route('/blockchain', methods=['GET'])
     def get_chain():

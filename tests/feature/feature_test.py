@@ -49,3 +49,8 @@ def test_blockchain(test_client):
     response = test_client.post("/transaction")
     #add assert for json with test data
     assert response.status_code == 400
+
+def test_blockchain(test_client):
+    response = test_client.get("/transactions")
+    #add assert for json with test data
+    assert response.status_code == 200
