@@ -24,3 +24,13 @@ def test_blockchain(test_client):
     response = test_client.post("/mine")
     #add assert for json with test data
     assert response.status_code == 201
+
+def test_blockchain(test_client):
+    response = test_client.post("/wallet")
+    #add assert for json with test data
+    assert response.status_code == 201
+
+def test_blockchain(test_client):
+    response = test_client.get("/wallet")
+    #add assert for json with test data
+    assert response.status_code == 201

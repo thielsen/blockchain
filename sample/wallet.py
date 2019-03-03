@@ -23,8 +23,10 @@ class Wallet:
                     file_line.write(self.private_key)
                     file_line.write('\n')
                     file_line.write(self.public_key)
+                return True
             except IOError:
                 print('Save error')
+                return False
         else:
             print('No keys to save')
 
@@ -34,8 +36,10 @@ class Wallet:
                 keys = file_line.readlines()
                 self.private_key = keys[0][:-1]
                 self.public_key = keys[1]
+            return True
         except IOError:
             print('Keys not found..')
+            return False
 
     def generate_keys(self):
         private_key = RSA.generate(1024, Crypto.Random.new().read)

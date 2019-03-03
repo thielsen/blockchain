@@ -6,9 +6,39 @@ from sample.blockchain import BlockChain
 wallet = Wallet()
 blockchain = BlockChain(wallet.public_key)
 
+
 def create_app(config=None):
     app = Flask(__name__)
     CORS(app)
+
+    @app.route('/wallet', methods=['POST'])
+    def create_keys():
+        wallet.create_keys()
+        if wallet.save_keys():
+            response =  {
+                'public_key': wallet.public_key,
+                'private_key': wallet.private_key
+            }
+            return jsonify(response), 201
+        else:
+            response = {
+                'message': 'Failed'
+            }
+            return jsonify(response), 500
+
+    @app.route('/wallet', methods=['GET'])
+    def load_keys():
+        if wallet.load_keys():
+            response =  {
+                'public_key': wallet.public_key,
+                'private_key': wallet.private_key
+            }
+            return jsonify(response), 201
+        else:
+            response = {
+                'message': 'Failed'
+            }
+            return jsonify(response), 500
 
     @app.route('/', methods=['GET'])
     def get_ui():
@@ -25,9 +55,9 @@ def create_app(config=None):
     @app.route('/mine', methods=['POST'])
     def mine_block():
         block = blockchain.mine_block()
-        dict_block = block.__dict__.copy()
-        dict_block['transactions'] = [tx.__dict__ for tx in dict_block['transactions']]
         if block is not None:
+            dict_block = block.__dict__.copy()
+            dict_block['transactions'] = [tx.__dict__ for tx in dict_block['transactions']]
             success_response = {
                 'message': 'Mining succeeded',
                 'block': dict_block
