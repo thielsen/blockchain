@@ -16,9 +16,9 @@ This project is WIP on a basic implementation of a blockchain in Python.
 
 ## API
 
-/, GET - Homepage
-/blockchain, GET - Returns blockchain
-/mine, POST - Mines a block
-/wallet, POST - Creates new public and private keys
-/wallet, GET - Loads existing public and private keys
-/balance, GET - Gets current balance
+- /, GET - Homepage
+- /blockchain, GET - Returns blockchain
+- /mine, POST - Mines a block
+- /wallet, POST - Creates new public and private keys
+- /wallet, GET - Loads existing public and private keys
+- /balance, GET - Gets current balance
