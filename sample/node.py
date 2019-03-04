@@ -15,7 +15,7 @@ def create_app(config=None):
     def create_keys():
         wallet.create_keys()
         if wallet.save_keys():
-            response =  {
+            response = {
                 'public_key': wallet.public_key,
                 'private_key': wallet.private_key,
                 'balance': get_balance()
@@ -30,7 +30,7 @@ def create_app(config=None):
     @app.route('/wallet', methods=['GET'])
     def load_keys():
         if wallet.load_keys():
-            response =  {
+            response = {
                 'public_key': wallet.public_key,
                 'private_key': wallet.private_key,
                 'balance': get_balance()
@@ -41,7 +41,7 @@ def create_app(config=None):
                 'message': 'Failed'
             }
             return jsonify(response), 500
-    
+
     @app.route('/balance', methods=['GET'])
     def get_balance():
         balance = blockchain.get_balance()
@@ -77,8 +77,13 @@ def create_app(config=None):
                 'message': 'Data missing'
             }
             return jsonify(response), 400
-        signature = wallet.sign_transaction(wallet.public_key, params['recipient'], params['amount'])
-        if blockchain.add_transaction(params['recipient'], signature, wallet.public_key, params['amount']):
+        signature = wallet.sign_transaction(wallet.public_key,
+                                            params['recipient'],
+                                            params['amount'])
+        if blockchain.add_transaction(params['recipient'],
+                                      signature,
+                                      wallet.public_key,
+                                      params['amount']):
             response = {
                 'message': 'Transaction added',
                 'transaction': {
@@ -99,11 +104,12 @@ def create_app(config=None):
     @app.route('/', methods=['GET'])
     def get_ui():
         return 'Working'
-    
+
     @app.route('/transactions', methods=['GET'])
     def view_open_transactions():
         transactions = blockchain.view_open_transactions()
-        dict_transactions = [transaction.__dict__ for transaction in transactions]
+        dict_transactions = [transaction.__dict__ for
+                             transaction in transactions]
         return jsonify(dict_transactions), 200
 
     @app.route('/blockchain', methods=['GET'])
@@ -111,7 +117,8 @@ def create_app(config=None):
         chain = blockchain.view_blockchain()
         dict_chain = [block.__dict__.copy() for block in chain]
         for dict_block in dict_chain:
-            dict_block['transactions'] = [tx.__dict__ for tx in dict_block['transactions']]
+            dict_block['transactions'] = [tx.__dict__ for tx in
+                                          dict_block['transactions']]
         return jsonify(dict_chain), 200
 
     @app.route('/mine', methods=['POST'])
@@ -119,7 +126,8 @@ def create_app(config=None):
         block = blockchain.mine_block()
         if block is not None:
             dict_block = block.__dict__.copy()
-            dict_block['transactions'] = [tx.__dict__ for tx in dict_block['transactions']]
+            dict_block['transactions'] = [tx.__dict__ for tx in
+                                          dict_block['transactions']]
             success_response = {
                 'message': 'Mining succeeded',
                 'block': dict_block,

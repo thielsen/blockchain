@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+
 class Transaction:
 
     def __init__(self, sender, recipient, signature, amount):
@@ -17,4 +18,3 @@ class Transaction:
         return OrderedDict([('sender', self.sender),
                             ('recipient', self.recipient),
                             ('amount', self.amount)])
-        

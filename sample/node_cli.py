@@ -1,6 +1,7 @@
 from sample.blockchain import BlockChain
 from sample.wallet import Wallet
 
+
 class Node:
 
     def __init__(self, wallet=None, blockchain=None):
@@ -40,8 +41,9 @@ class Node:
     #         elif user_choice == 3:
     #             self.print_blockchain_element()
     #         elif user_choice == 4:
-    #             if Verify.verify_transactions(self.blockchain.view_open_transactions(),
-    #                                           self.blockchain.get_balance):
+    #             if Verify.verify_transactions
+    #                (self.blockchain.view_open_transactions(),
+    #                 self.blockchain.get_balance):
     #                 print('Verified')
     #             else:
     #                 print('Invalid transactions')
@@ -85,7 +87,9 @@ class Node:
 
     # def submit_transaction(self, tx_data):
     #     recipient, amount = tx_data
-    #     signature = self.wallet.sign_transaction(self.wallet.public_key, recipient, amount)
+    #     signature = self.wallet.sign_transaction(self.wallet.public_key,
+    #                                              recipient,
+    #                                              amount)
     #     return self.blockchain.add_transaction(recipient,
     #                                            signature,
     #                                            self.wallet.public_key,

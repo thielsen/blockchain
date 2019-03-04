@@ -1,5 +1,5 @@
-import pytest
 import os
+import pytest
 
 from sample.blockchain import *
 from sample.crypto_utilities import *
@@ -22,8 +22,8 @@ def test_public_private_verification():
     bob_wallet = Wallet('./tests/bob_wallet.txt')
     signature = alice_wallet.sign_transaction(ALICE_PUBLIC, BOB_PUBLIC, 100)
     transaction = Transaction(ALICE_PUBLIC, BOB_PUBLIC, signature, 100)
-    assert alice_wallet.verify_transaction(transaction) == True
-    assert bob_wallet.verify_transaction(transaction) == True
+    assert alice_wallet.verify_transaction(transaction)
+    assert bob_wallet.verify_transaction(transaction)
 
 def test_cannot_send_if_transactions_in_queue_are_too_much():
     alice_wallet = Wallet('./tests/alice_wallet.txt')
@@ -58,5 +58,5 @@ def test_add_transaction_to_open():
     alice_blockchain.add_transaction(BOB_PUBLIC, alice_signing, amount=3.4)
     assert repr(alice_blockchain.view_open_transactions()[0]) == 'Sender: {}, Recipient: {}, Amount: 3.4'.format(ALICE_PUBLIC, BOB_PUBLIC)
     assert repr(alice_blockchain.view_open_transactions()[1]) == 'Sender: {}, Recipient: {}, Amount: 3.4'.format(ALICE_PUBLIC, BOB_PUBLIC)
-    assert isinstance(alice_blockchain.view_open_transactions()[0], Transaction) is True
-    assert isinstance(alice_blockchain.view_open_transactions()[1], Transaction) is True
+    assert isinstance(alice_blockchain.view_open_transactions()[0], Transaction)
+    assert isinstance(alice_blockchain.view_open_transactions()[1], Transaction)

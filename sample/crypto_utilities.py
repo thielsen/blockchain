@@ -1,8 +1,10 @@
-from Crypto.Hash import SHA256
 from json import dumps
+from Crypto.Hash import SHA256
+
 
 def hash_string_256(string):
     return SHA256.new(string).hexdigest()
+
 
 def hash_block(block):
     dictionary_block = block.__dict__.copy()
