@@ -1,3 +1,4 @@
 [run]
 omit =
     */__init__.py
+    node_cli.py
