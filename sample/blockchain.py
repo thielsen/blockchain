@@ -71,13 +71,6 @@ class BlockChain():
         self.save_data()
         return block
 
-    # def get_last_blockchain_value(self):
-    #     value = None if not self.__blockchain else self.__blockchain[-1]
-    #     return value
-        # if not self.__blockchain:
-        #     return None
-        # return self.__blockchain[-1]
-
     def get_balance(self):
         if self.node == None:
             return None
