@@ -18,7 +18,7 @@ def create_app(config=None):
             response = {
                 'public_key': wallet.public_key,
                 'private_key': wallet.private_key,
-                'balance': get_balance()
+                'balance': blockchain.get_balance()
             }
             return jsonify(response), 201
         else:
@@ -33,7 +33,7 @@ def create_app(config=None):
             response = {
                 'public_key': wallet.public_key,
                 'private_key': wallet.private_key,
-                'balance': get_balance()
+                'balance': blockchain.get_balance()
             }
             return jsonify(response), 201
         else:
