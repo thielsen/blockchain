@@ -49,8 +49,9 @@ def test_cannot_send_if_no_balance(test_blockchain):
     assert not BOB_PUBLIC in repr(test_blockchain.view_blockchain())
     assert not ALICE_PUBLIC in repr(test_blockchain.view_blockchain())
 
-
-
+def test_add_peer(test_blockchain):
+    test_blockchain.add_peer(BOB_PUBLIC)
+    assert test_blockchain._BlockChain__peer_ids == {BOB_PUBLIC}
 
 # Need to mock this test with hardcoded timestamps as time stamps are changing
 # def test_proof_of_work(test_blockchain):

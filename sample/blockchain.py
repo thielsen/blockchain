@@ -19,6 +19,11 @@ class BlockChain():
         self.file_location = file_location
         self.load_data()
         self.node_id = node_id
+        self.__peer_ids = set()
+
+    def add_peer(self, node):
+        self.__peer_ids.add(node)
+        self.save_data()
 
     def view_blockchain(self):
         return self.__blockchain[:]
@@ -30,7 +35,8 @@ class BlockChain():
         try:
             with open(self.file_location, mode='wb') as file_line:
                 save_data = {'chain': self.__blockchain,
-                             'ot': self.__open_transactions}
+                             'ot': self.__open_transactions,
+                             'peers': self.__peer_ids}
                 file_line.write(dumps(save_data))
         except IOError:
             print('Save error')
@@ -41,6 +47,7 @@ class BlockChain():
                 file_content = loads(file_line.read())
                 self.__blockchain = file_content['chain']
                 self.__open_transactions = file_content['ot']
+                self.__peer_ids = set(file_content['peers'])
         except IOError:
             print('Existing blockchain not found. Initializing...')
 
