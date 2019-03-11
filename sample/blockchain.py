@@ -18,7 +18,7 @@ class BlockChain():
         self.__open_transactions = []
         self.file_location = file_location
         self.load_data()
-        self.node = node_id
+        self.node_id = node_id
 
     def view_blockchain(self):
         return self.__blockchain[:]
@@ -46,8 +46,8 @@ class BlockChain():
 
     def add_transaction(self, recipient, signature, sender=None, amount=1.0):
         if sender is None:
-            sender = self.node
-        if self.node is None:
+            sender = self.node_id
+        if self.node_id is None:
             return False
         transaction = Transaction(sender, recipient, signature, amount)
         if Verify.verify_transaction(transaction, self.get_balance):
@@ -57,14 +57,14 @@ class BlockChain():
         return False
 
     def mine_block(self):
-        if self.node is None:
+        if self.node_id is None:
             print('selfnode_none')
             return None
         last_block = self.__blockchain[-1]
         hashed_block = hash_block(last_block)
         proof = self.proof_of_work()
         reward_transaction = Transaction('MINED',
-                                         self.node,
+                                         self.node_id,
                                          '',
                                          BlockChain.MINING_REWARD)
         copied_transactions = self.__open_transactions[:]
@@ -83,19 +83,19 @@ class BlockChain():
         return block
 
     def get_balance(self):
-        if self.node is None:
+        if self.node_id is None:
             return None
         tx_sender = [
-            [tx.amount for tx in block.transactions if tx.sender == self.node]
+            [tx.amount for tx in block.transactions if tx.sender == self.node_id]
             for block in self.__blockchain
             ]
         open_tx_sender = [tx.amount for tx in self.__open_transactions if
-                          tx.sender == self.node]
+                          tx.sender == self.node_id]
         tx_sender.append(open_tx_sender)
         amount_sent = reduce(lambda x, y: x+sum(y), tx_sender, 0)
         tx_recipient = [
             [tx.amount for tx in block.transactions if
-             tx.recipient == self.node]
+             tx.recipient == self.node_id]
             for block in self.__blockchain
             ]
         amount_received = reduce(lambda x, y: x+sum(y), tx_recipient, 0)

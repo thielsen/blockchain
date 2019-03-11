@@ -22,6 +22,7 @@ def create_app(config=None):
     @app.route('/wallet', methods=['POST'])
     def create_keys():
         wallet.create_keys()
+        blockchain = BlockChain(wallet.public_key)
         if wallet.save_keys():
             return jsonify(keys_file_response()), 201
         else:
