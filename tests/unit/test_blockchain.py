@@ -53,6 +53,11 @@ def test_add_peer(test_blockchain):
     test_blockchain.add_peer(BOB_PUBLIC)
     assert test_blockchain._BlockChain__peer_ids == {BOB_PUBLIC}
 
+def test_delete_peer(test_blockchain):
+    test_blockchain.add_peer(BOB_PUBLIC)    
+    test_blockchain.delete_peer(BOB_PUBLIC)
+    assert test_blockchain._BlockChain__peer_ids == set()
+
 # Need to mock this test with hardcoded timestamps as time stamps are changing
 # def test_proof_of_work(test_blockchain):
 #     test_blockchain.add_transaction('Bob', amount=3.4)
