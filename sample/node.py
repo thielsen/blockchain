@@ -11,16 +11,19 @@ def create_app(config=None):
     app = Flask(__name__)
     CORS(app)
 
+    def keys_file_response():
+        response = {
+            'public_key': wallet.public_key,
+            'private_key': wallet.private_key,
+            'balance': blockchain.get_balance()
+            }
+        return response
+
     @app.route('/wallet', methods=['POST'])
     def create_keys():
         wallet.create_keys()
         if wallet.save_keys():
-            response = {
-                'public_key': wallet.public_key,
-                'private_key': wallet.private_key,
-                'balance': blockchain.get_balance()
-            }
-            return jsonify(response), 201
+            return jsonify(keys_file_response()), 201
         else:
             response = {
                 'message': 'Failed'
@@ -30,12 +33,7 @@ def create_app(config=None):
     @app.route('/wallet', methods=['GET'])
     def load_keys():
         if wallet.load_keys():
-            response = {
-                'public_key': wallet.public_key,
-                'private_key': wallet.private_key,
-                'balance': blockchain.get_balance()
-            }
-            return jsonify(response), 201
+            return jsonify(keys_file_response()), 201
         else:
             response = {
                 'message': 'Failed'
