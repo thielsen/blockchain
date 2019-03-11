@@ -17,7 +17,10 @@ def test_home_page(test_client):
     assert response.status_code == 200
     assert b"Working" in response.data
 
-
+def test_add_peer(test_client):
+    response = test_client.post("/peer")
+    assert response.status_code == 400
+    assert b"No data"
 def test_blockchain(test_client):
     response = test_client.get("/blockchain")
     assert b"index" in response.data

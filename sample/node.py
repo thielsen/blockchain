@@ -19,6 +19,22 @@ def create_app(config=None):
             'balance': blockchain.get_balance()
             }
         return response
+    
+    @app.route('/peer', methods=['POST'])
+    def add_peer():
+        values = request.get_json()
+        if not values:
+            response = {
+                'message': 'No data'
+            }
+            return jsonify(response), 400
+        if 'peer' not in values:
+            response = {
+                'message': 'No peer'
+            }
+            return jsonify(response), 400
+        peer = values['peer']
+        blockchain.add_peer(peer)
 
     @app.route('/wallet', methods=['POST'])
     def create_keys():
