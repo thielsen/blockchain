@@ -25,6 +25,8 @@ def test_blockchain(test_client):
 
 def test_mine(test_client):
     test_client.post("/wallet")
+    response = test_client.get("/blockchain")
+    print(response.data)
     response = test_client.post("/mine")
     print(response.data)
     # add assert for json with test data
@@ -45,6 +47,8 @@ def test_wallet_get(test_client):
 
 def test_balance_get(test_client):
     test_client.post("/wallet")
+    response = test_client.get("/blockchain")
+    print(response.data)
     response = test_client.get("/balance")
     print(response.data)
     # add assert for json with test data
