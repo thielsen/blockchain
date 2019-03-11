@@ -51,12 +51,12 @@ def test_cannot_send_if_no_balance(test_blockchain):
 
 def test_add_peer(test_blockchain):
     test_blockchain.add_peer(BOB_PUBLIC)
-    assert test_blockchain._BlockChain__peer_ids == {BOB_PUBLIC}
+    assert test_blockchain.get_peers() == [BOB_PUBLIC]
 
 def test_delete_peer(test_blockchain):
     test_blockchain.add_peer(BOB_PUBLIC)    
     test_blockchain.delete_peer(BOB_PUBLIC)
-    assert test_blockchain._BlockChain__peer_ids == set()
+    assert test_blockchain.get_peers() == []
 
 # Need to mock this test with hardcoded timestamps as time stamps are changing
 # def test_proof_of_work(test_blockchain):

@@ -29,6 +29,9 @@ class BlockChain():
         self.__peer_ids.discard(node)
         self.save_data()
 
+    def get_peers(self):
+        return list(self.__peer_ids)[:]
+
     def view_blockchain(self):
         return self.__blockchain[:]
 
