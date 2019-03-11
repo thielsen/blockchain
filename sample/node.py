@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from sample.wallet import Wallet
 from sample.blockchain import BlockChain
@@ -102,7 +102,7 @@ def create_app(config=None):
 
     @app.route('/', methods=['GET'])
     def get_ui():
-        return 'Working'
+        return send_from_directory('../web', 'node.html')
 
     @app.route('/transactions', methods=['GET'])
     def view_open_transactions():
