@@ -4,9 +4,8 @@ from sample.wallet import Wallet
 from sample.blockchain import BlockChain
 
 wallet = Wallet()
+wallet.create_keys()
 blockchain = BlockChain(wallet.public_key)
-print(wallet)
-print(blockchain)
 
 
 def create_app(config=None):
