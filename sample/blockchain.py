@@ -30,7 +30,7 @@ class BlockChain():
         self.save_data()
 
     def get_peers(self):
-        return list(self.__peer_ids)[:]
+        return list(self.__peer_ids)
 
     def view_blockchain(self):
         return self.__blockchain[:]
