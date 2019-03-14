@@ -11,6 +11,7 @@ This project is work in progress on a fully TDD basic implementation of blockcha
 - Pytest (TDD)
 - Travis (CI)
 - Docker (Container)
+- Serverspec (TDD of docker build)
 
 ## Design
 
@@ -49,7 +50,6 @@ You can then connect to http://localhost:4000 using postman and the APIs detaile
 - Add functionality to allow nodes to share created blocks with other nodes
 - Add functionality to allow a new node to sync to other nodes
 - Add SPA front end to control nodes locally and eliminate the need to use Postman
-- Setup serverspec to test docker development process
 - Add node autodiscovery so other nodes don't need to be added manually
 
 ## Credits

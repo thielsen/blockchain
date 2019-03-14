@@ -1,6 +1,6 @@
 FROM alpine
 
-MAINTAINER Simon Green "simon.green@thielsen.co.uk"
+LABEL Simon Green "simon.green@thielsen.co.uk"
 
 RUN apk update && \
     apk add python3 g++

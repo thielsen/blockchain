@@ -8,7 +8,6 @@ describe 'Dockerfile' do
     set :os, family: :alpine
     set :backend, :docker
     set :docker_image, @image.id
-    # set :docker_container_create_options, {'Entrypoint' => ['ASH']}
   end
 
   it 'has the working directory set correctly' do
@@ -25,5 +24,9 @@ describe 'Dockerfile' do
 
   it 'should have app.py installed' do
     expect(file('/app/app.py')).to be_file
+  end
+
+  it 'should be listening on TCP port 4000' do
+    expect(port(4000)).to be_listening.with('tcp')
   end
 end
