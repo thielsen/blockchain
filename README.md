@@ -44,7 +44,7 @@ You can then connect to http://localhost:4000 using postman and the APIs detaile
 
 ## TODOS
 
-- Detail the APIs in more detail and 
+- Detail the APIs in more detail and add documentation of the backend design
 - Create docker-compose to automatically fire up multiple nodes
 - Add functionality to allow nodes to share created blocks with other nodes
 - Add functionality to allow a new node to sync to other nodes
