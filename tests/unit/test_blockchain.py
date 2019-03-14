@@ -88,12 +88,14 @@ def test_create_file(test_blockchain):
 # def test_load_data_on_startup
 
 def test_send_transaction_to_peers(test_blockchain):
+    test_blockchain.add_peer('1.1.1.1:5000')
+    test_blockchain.send_transaction_to_peers(BOB_PUBLIC, SIMON_PUBLIC, 3.4, 'fakesignature')
     mock_post_patcher = patch('sample.blockchain.post')
     mock_post = mock_post_patcher.start()
     mock_post.return_value.status_code = 400
-    test_blockchain.add_peer('1.1.1.1:5000')
     assert test_blockchain.send_transaction_to_peers(BOB_PUBLIC, SIMON_PUBLIC, 3.4, 'fakesignature') is False
     mock_post.return_value.status_code = 500
     assert test_blockchain.send_transaction_to_peers(BOB_PUBLIC, SIMON_PUBLIC, 3.4, 'fakesignature') is False
     mock_post.return_value.status_code = 201
     assert test_blockchain.send_transaction_to_peers(BOB_PUBLIC, SIMON_PUBLIC, 3.4, 'fakesignature') is True
+    

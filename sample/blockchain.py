@@ -1,6 +1,6 @@
 from functools import reduce
 from pickle import loads, dumps
-from requests import post
+from requests import post, exceptions
 
 from sample.crypto_utilities import hash_block
 from sample.block import Block
@@ -62,14 +62,18 @@ class BlockChain():
     def send_transaction_to_peers(self, sender, recipient, amount, signature):
         for url in self.__peer_urls:
             full_url = 'http://{}/peer-update'.format(url)
-            response = post(full_url, json={'sender': sender,
-                                            'recipient': recipient,
-                                            'amount': amount,
-                                            'signature': signature})
-            print(response.status_code)
-            if response.status_code == 400 or response.status_code == 500:
-                print('Error. Transaction failed')
-                return False
+            try:
+                response = post(full_url, timeout=3, 
+                                json={'sender': sender,
+                                      'recipient': recipient,
+                                      'amount': amount,
+                                      'signature': signature})
+                print(response.status_code)
+                if response.status_code == 400 or response.status_code == 500:
+                    print('Error. Transaction failed')
+                    return False
+            except exceptions.ConnectionError:
+                continue
         return True
 
     def add_transaction(self, recipient, signature, sender=None, amount=1.0):
