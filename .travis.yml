@@ -11,11 +11,13 @@ before_script:  # code coverage tool
   - ./cc-test-reporter before-build
 install:
   - pip install -r requirements.txt
+  - bundle install
 env:
   global:
     - CC_TEST_REPORTER_ID=3cbe2a1b8d277ba660268b94fa0aa1698e69d2b5a81aec7c6084d5bb45ff27dd
 script:
   - python -m pytest --cov-config .coveragerc --cov=sample
+  - bundle install
   - mkdir -p spec && bundle exec rspec spec
   - rspec
 after_script:
