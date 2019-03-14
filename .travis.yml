@@ -17,7 +17,7 @@ env:
     - CC_TEST_REPORTER_ID=3cbe2a1b8d277ba660268b94fa0aa1698e69d2b5a81aec7c6084d5bb45ff27dd
 script:
   - python -m pytest --cov-config .coveragerc --cov=sample
-  - mkdir -p spec && bundle exec rspec spec
+  # - mkdir -p spec && bundle exec rspec spec
 after_script:
   - coverage xml
   - ./cc-test-reporter after-build
