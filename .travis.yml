@@ -1,9 +1,10 @@
 dist: xenial
 language: python
-cache: bundler
 sudo: required
 python: 3.7
-cache: pip
+cache: 
+  - pip 
+  - bundler
 before_script:  # code coverage tool
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
