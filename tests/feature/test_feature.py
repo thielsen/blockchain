@@ -1,7 +1,7 @@
 import pytest
 from flask import jsonify
 
-from sample.node import create_app
+from sample.node_ui import create_app
 
 
 @pytest.fixture
@@ -17,12 +17,6 @@ def test_home_page(test_client):
     response = test_client.get("/")
     assert response.status_code == 200
     assert b"Working" in response.data
-
-
-def test_add_peer(test_client):
-    response = test_client.post("/peer")
-    assert response.status_code == 400
-    assert b"No data"
 
 
 def test_blockchain(test_client):
@@ -65,6 +59,18 @@ def test_transaction_get(test_client):
     response = test_client.get("/transactions")
     assert b"[]" in response.data
     assert response.status_code == 200
+
+
+def test_add_peer_no_data(test_client):
+    response = test_client.post("/peer")
+    assert response.status_code == 400
+    assert b"No data" in response.data
+
+
+def test_add_peer_wrong_values(test_client):
+    response = test_client.post("/peer", json={"notpeer": "testpeer.com"})
+    assert response.status_code == 400
+    assert b"No peer" in response.data
 
 
 def test_delete_peer(test_client):
