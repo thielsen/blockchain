@@ -17,9 +17,9 @@ class BlockChain():
         self.__blockchain = [BlockChain.GENESIS_BLOCK]
         self.__open_transactions = []
         self.file_location = file_location
-        self.load_data()
-        self.node_id = node_id
         self.__peer_ids = set()
+        self.node_id = node_id
+        self.load_data()
 
     def add_peer(self, node):
         self.__peer_ids.add(node)

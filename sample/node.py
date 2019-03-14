@@ -23,6 +23,7 @@ def create_app(config=None):
     @app.route('/peer', methods=['POST'])
     def add_peer():
         values = request.get_json()
+        print(values)
         if not values:
             response = {
                 'message': 'No data'
@@ -40,6 +41,20 @@ def create_app(config=None):
             'peers': blockchain.get_peers()
         }
         return jsonify(response), 201
+
+    @app.route('/peer/<url>', methods=['DELETE'])
+    def delete_peer(url):
+        if url == '' or url is None:
+            response = {
+                'message': 'Peer not found'
+            }
+            return jsonify(response), 400
+        blockchain.delete_peer(url)
+        response = {
+            'message': 'Deleted',
+            'all_peers': blockchain.get_peers()
+        }
+        return jsonify(response), 200
 
     @app.route('/wallet', methods=['POST'])
     def create_keys():
