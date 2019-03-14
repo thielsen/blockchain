@@ -1,5 +1,6 @@
 dist: xenial
 language: python
+cache: bundler
 sudo: required
 python: 3.7
 cache: pip
