@@ -1,6 +1,8 @@
 from pickle import loads
 import os
 import pytest
+import requests_mock
+from unittest.mock import patch
 
 from sample.blockchain import BlockChain
 from sample.block import Block
@@ -56,13 +58,13 @@ def test_cannot_send_if_no_balance(test_blockchain):
 
 
 def test_add_peer(test_blockchain):
-    test_blockchain.add_peer(BOB_PUBLIC)
-    assert test_blockchain.get_peers() == [BOB_PUBLIC]
+    test_blockchain.add_peer('1.1.1.1:5000')
+    assert test_blockchain.get_peers() == ['1.1.1.1:5000']
 
 
 def test_delete_peer(test_blockchain):
-    test_blockchain.add_peer(BOB_PUBLIC)
-    test_blockchain.delete_peer(BOB_PUBLIC)
+    test_blockchain.add_peer('1.1.1.1:5000')
+    test_blockchain.delete_peer('1.1.1.1:5000')
     assert test_blockchain.get_peers() == []
 
 # Need to mock this test with hardcoded timestamps as time stamps are changing
@@ -84,3 +86,14 @@ def test_create_file(test_blockchain):
     assert isinstance(file_content['chain'][1], Block)
 
 # def test_load_data_on_startup
+
+def test_send_transaction_to_peers(test_blockchain):
+    mock_post_patcher = patch('sample.blockchain.post')
+    mock_post = mock_post_patcher.start()
+    mock_post.return_value.status_code = 400
+    test_blockchain.add_peer('1.1.1.1:5000')
+    assert test_blockchain.send_transaction_to_peers(BOB_PUBLIC, SIMON_PUBLIC, 3.4, 'fakesignature') is False
+    mock_post.return_value.status_code = 500
+    assert test_blockchain.send_transaction_to_peers(BOB_PUBLIC, SIMON_PUBLIC, 3.4, 'fakesignature') is False
+    mock_post.return_value.status_code = 201
+    assert test_blockchain.send_transaction_to_peers(BOB_PUBLIC, SIMON_PUBLIC, 3.4, 'fakesignature') is True

@@ -99,3 +99,4 @@ def test_get_peers(test_client):
     response = test_client.get("/peers")
     assert b"all_peers" in response.data
     assert response.status_code == 200
+    

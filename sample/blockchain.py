@@ -1,5 +1,6 @@
 from functools import reduce
 from pickle import loads, dumps
+from requests import post
 
 from sample.crypto_utilities import hash_block
 from sample.block import Block
@@ -17,20 +18,20 @@ class BlockChain():
         self.__blockchain = [BlockChain.GENESIS_BLOCK]
         self.__open_transactions = []
         self.file_location = file_location
-        self.__peer_ids = set()
+        self.__peer_urls = set()
         self.node_id = node_id
         self.load_data()
 
     def add_peer(self, node):
-        self.__peer_ids.add(node)
+        self.__peer_urls.add(node)
         self.save_data()
 
     def delete_peer(self, node):
-        self.__peer_ids.discard(node)
+        self.__peer_urls.discard(node)
         self.save_data()
 
     def get_peers(self):
-        return list(self.__peer_ids)
+        return list(self.__peer_urls)
 
     def view_blockchain(self):
         return self.__blockchain[:]
@@ -43,7 +44,7 @@ class BlockChain():
             with open(self.file_location, mode='wb') as file_line:
                 save_data = {'chain': self.__blockchain,
                              'ot': self.__open_transactions,
-                             'peers': self.__peer_ids}
+                             'peers': self.__peer_urls}
                 file_line.write(dumps(save_data))
         except IOError:
             print('Save error')
@@ -54,9 +55,22 @@ class BlockChain():
                 file_content = loads(file_line.read())
                 self.__blockchain = file_content['chain']
                 self.__open_transactions = file_content['ot']
-                self.__peer_ids = set(file_content['peers'])
+                self.__peer_urls = set(file_content['peers'])
         except IOError:
             print('Existing blockchain not found. Initializing...')
+
+    def send_transaction_to_peers(self, sender, recipient, amount, signature):
+        for url in self.__peer_urls:
+            full_url = 'http://{}/peer-update'.format(url)
+            response = post(full_url, json={'sender': sender,
+                                            'recipient': recipient,
+                                            'amount': amount,
+                                            'signature': signature})
+            print(response.status_code)
+            if response.status_code == 400 or response.status_code == 500:
+                print('Error. Transaction failed')
+                return False
+        return True
 
     def add_transaction(self, recipient, signature, sender=None, amount=1.0):
         if sender is None:
@@ -67,9 +81,11 @@ class BlockChain():
         if Verify.verify_transaction(transaction, self.get_balance):
             self.__open_transactions.append(transaction)
             self.save_data()
+            if not self.send_transaction_to_peers(sender, recipient, amount, signature):
+                return False
             return True
         return False
-
+    
     def mine_block(self):
         if self.node_id is None:
             return None
