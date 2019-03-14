@@ -22,4 +22,8 @@ describe 'Dockerfile' do
   it 'should have gcc+ installed' do
     expect(package('g++')).to be_installed
   end
+
+  it 'should have app.py installed' do
+    expect(file('/app/app.py')).to be_file
+  end
 end
