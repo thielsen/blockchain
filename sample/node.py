@@ -56,6 +56,15 @@ def create_app(config=None):
         }
         return jsonify(response), 200
 
+    @app.route('/peers', methods=['GET'])
+    def get_peers():
+        peers = blockchain.get_peers()
+        response = {
+            'all_peers': peers
+        }
+        return jsonify(response), 200
+
+
     @app.route('/wallet', methods=['POST'])
     def create_keys():
         wallet.create_keys()
