@@ -96,7 +96,9 @@ def test_full_add_and_delete_peer_test(test_client):
     assert response.status_code == 200
 
 def test_get_peers(test_client):
+    response = test_client.post("/peer", json={"peer": "testpeer.com"})
     response = test_client.get("/peers")
     assert b"all_peers" in response.data
+    assert b"testpeer.com" in response.data
     assert response.status_code == 200
     

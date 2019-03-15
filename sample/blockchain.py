@@ -63,7 +63,7 @@ class BlockChain():
         for url in self.__peer_urls:
             full_url = 'http://{}/peer-update'.format(url)
             try:
-                response = post(full_url, timeout=3, 
+                response = post(full_url, timeout=3,
                                 json={'sender': sender,
                                       'recipient': recipient,
                                       'amount': amount,
@@ -85,11 +85,14 @@ class BlockChain():
         if Verify.verify_transaction(transaction, self.get_balance):
             self.__open_transactions.append(transaction)
             self.save_data()
-            if not self.send_transaction_to_peers(sender, recipient, amount, signature):
+            if not self.send_transaction_to_peers(sender,
+                                                  recipient,
+                                                  amount,
+                                                  signature):
                 return False
             return True
         return False
-    
+
     def mine_block(self):
         if self.node_id is None:
             return None
