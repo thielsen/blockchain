@@ -2,6 +2,7 @@ import pytest
 
 from sample.block import Block
 
+
 def test_repr():
     test_block = Block(0, 'b81af956031df89ac679981fc6641addd4bc4fe49641570886ec258986cc976d',
                        ['Test_Transaction'], 99, 0)

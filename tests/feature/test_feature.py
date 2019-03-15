@@ -3,6 +3,14 @@ from flask import jsonify
 
 from sample.node_ui import create_app
 
+# Create keys - 201,500
+# Load keys - 201, 500
+# Get balance - 200, 500
+# Add transaction - 400,400,400,500,201
+# View open transactions - 200
+# Get chain - 200
+# Mine block - 201, 500
+
 
 @pytest.fixture
 def test_client():
@@ -95,10 +103,10 @@ def test_full_add_and_delete_peer_test(test_client):
     assert b"testpeer2.com" not in response.data
     assert response.status_code == 200
 
+
 def test_get_peers(test_client):
     response = test_client.post("/peer", json={"peer": "testpeer.com"})
     response = test_client.get("/peers")
     assert b"all_peers" in response.data
     assert b"testpeer.com" in response.data
     assert response.status_code == 200
-    

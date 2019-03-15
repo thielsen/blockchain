@@ -11,26 +11,31 @@ ALICE_PUBLIC = '30819f300d06092a864886f70d010101050003818d0030818902818100d91cc6
 SIMON_PRIVATE = '3082025c02010002818100a14fc6e54b8cea3e80b0b5067c1e862f618164ae2acc717dee30b1fd241a5d42b29f6d53af68898223ed11a433cf19bc98916842800c598c70a1fd59f80c1e04ea48f01ed4fb607abad8c92f4eff56d0a2e0fa781b13c6b604cb171b559ea05ac63eec8b01bed74c0212c1775d3471a531a593b57bd1dd9ba0acfc8c6b0ef26d0203010001028180195756881bfbc9aac2fdbf9a82b22ae3539e87aa02c8364611bead9f7665fbe3a7fafaaa4c62904395103f96bb9adbd0b0691b6763054da60de5accecef45c5caa6afb4c98bae763784863f26e386233638ec21e85b901d98a6349d337069c1388b45c56c5ae070f1a79d9febe161851ec920070950dc2e6cca695a114aeddd3024100c3c8a5f96bd23c65b7a8552709f5b3ea5dadea527aa8a1ff6db8b3d262dc2eee8fa5601acd3b55eb5e0adafb7cff86e5720b3ee416e7e706354ae99bc6aa09c3024100d2ece872dd814f63556c0cac072717562b7c332347e2981c91a7cc3755c09ce88eacd16c70056b97a11c3da589153db2eee2cd008064d5fbdce8803b24a0200f0240325e0034f684137da78deaba2c59c57b59b6503dffc83a44d81958499b9d4185a5f6c98e9b95d438c4ecce013cdb0ffd1f25bd7c3858589ac4430d6e41e1a4b9024100a3871d2880e7121f9748b00267813d2c8786413767321c7079d4b815669c708a34a373b2389f5b2d31b16d71fb77c66005a93cfad89054fe71e4a816326d1aad0240411a54e3da17375ff25d9ff7f1fb4a69af6fec8af216be2927b54b998b08c0d97c5a92610535176594d033e495b72de3a449285c3d47a7e89ca71b0c19c1c15b'
 SIMON_PUBLIC = '30819f300d06092a864886f70d010101050003818d0030818902818100a14fc6e54b8cea3e80b0b5067c1e862f618164ae2acc717dee30b1fd241a5d42b29f6d53af68898223ed11a433cf19bc98916842800c598c70a1fd59f80c1e04ea48f01ed4fb607abad8c92f4eff56d0a2e0fa781b13c6b604cb171b559ea05ac63eec8b01bed74c0212c1775d3471a531a593b57bd1dd9ba0acfc8c6b0ef26d0203010001'
 
+
 @pytest.fixture
 def test_wallet():
     test_wallet = Wallet()
     test_wallet.create_keys()
     yield test_wallet
 
+
 def test_confirm_private_key_generated(test_wallet):
-    assert ('3082' in test_wallet.private_key)
+    assert '3082' in test_wallet.private_key
+
 
 def test_confirm_public_key_generated(test_wallet):
-    assert ('3081' in test_wallet.public_key)
+    assert '3081' in test_wallet.public_key
+
 
 def test_confirm_different_keys_are_produced_each_run(test_wallet):
     test_wallet2 = Wallet()
     test_wallet2.create_keys()
     assert test_wallet.private_key != test_wallet2.private_key
 
+
 def test_sign_transaction(test_wallet):
     # Private key changes each time so this does - how can I mock a wallet?
     signed_transaction = test_wallet.sign_transaction(ALICE_PUBLIC, BOB_PUBLIC, 100)
     assert len(signed_transaction) == 256
 
-#Mock a test for verify transaction - covered by integration test for now
+# Mock a test for verify transaction - covered by integration test for now
