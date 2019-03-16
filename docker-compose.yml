@@ -1,0 +1,8 @@
+version: "3"
+services:
+
+  node1:
+    hostname: node1
+    image: blockchain_node:latest
+    ports:
+      - "4001:4000"
