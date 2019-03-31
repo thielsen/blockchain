@@ -10,6 +10,7 @@ from sample.node_ui import create_app
 # View open transactions - 200
 # Get chain - 200
 # Mine block - 201, 500
+# broadcast - 201, 500
 
 
 @pytest.fixture
@@ -110,3 +111,18 @@ def test_get_peers(test_client):
     assert b"all_peers" in response.data
     assert b"testpeer.com" in response.data
     assert response.status_code == 200
+
+def test_broadcast_no_data(test_client):
+    response = test_client.post("/broadcast")
+    assert b"No data" in response.data
+    assert response.status_code == 400
+
+def test_broadcast_no_data(test_client):
+    response = test_client.post("/broadcast", json={"sender": "testsender"})
+    assert b"Data missing" in response.data
+    assert response.status_code == 400
+
+def test_broadcast_no_data(test_client):
+    response = test_client.post("/broadcast", json={"sender": "testsender"})
+    assert b"Data missing" in response.data
+    assert response.status_code == 400

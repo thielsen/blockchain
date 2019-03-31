@@ -76,7 +76,7 @@ class BlockChain():
                 continue
         return True
 
-    def add_transaction(self, recipient, signature, sender=None, amount=1.0):
+    def add_transaction(self, recipient, signature, sender=None, amount=1.0, broadcast=False):
         if sender is None:
             sender = self.node_id
         if self.node_id is None:
@@ -85,12 +85,13 @@ class BlockChain():
         if Verify.verify_transaction(transaction, self.get_balance):
             self.__open_transactions.append(transaction)
             self.save_data()
-            if not self.send_transaction_to_peers(sender,
-                                                  recipient,
-                                                  amount,
-                                                  signature):
-                return False
-            return True
+            if not broadcast:
+                if not self.send_transaction_to_peers(sender,
+                                                    recipient,
+                                                    amount,
+                                                    signature):
+                    return False
+                return True
         return False
 
     def mine_block(self):
@@ -117,9 +118,13 @@ class BlockChain():
         self.save_data()
         return block
 
-    def get_balance(self):
-        if self.node_id is None:
-            return None
+    def get_balance(self, sender=None):
+        if sender == None:
+            if self.node_id is None:
+                return None
+            participant = self.node_id
+        else:
+            participant = sender
         tx_sender = [
             [tx.amount for tx in block.transactions if tx.sender == self.node_id]
             for block in self.__blockchain

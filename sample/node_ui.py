@@ -41,6 +41,39 @@ def create_app(config=None):
             'peers': blockchain.get_peers()
         }
         return jsonify(response), 201
+    
+    @app.route('/broadcast', methods=['POST'])
+    def broadcast():
+        values = request.get_json()
+        if not values:
+            response = {'message': 'No data'}
+            return jsonify(response), 400
+        required = ['recipient', 'signature', 'sender', 'amount']
+        if not all(key in values for key in required):
+            response = {'message': 'Data missing'}
+            return jsonify(response), 400
+        if blockchain.add_transaction(values['recipient'],
+                                   values['signature'],
+                                   values['sender'],
+                                   values['amount'],
+                                   broadcast=True):
+            response = {
+                'message': 'Transaction added',
+                'transaction': {
+                    'sender': wallet.public_key,
+                    'recipient': params['recipient'],
+                    'amount': params['amount'],
+                    'signature': signature
+                },
+                'balance': blockchain.get_balance()
+            }
+            return jsonify(response), 201
+        else:
+            response = {
+                'message': 'Transaction failed'
+            }
+            return jsonify(response), 500
+
 
     @app.route('/peer/<url>', methods=['DELETE'])
     def delete_peer(url):
