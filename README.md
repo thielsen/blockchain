@@ -32,6 +32,7 @@ Each wallet is produced with a public/private key pair. The public key is used a
 - /peer         POST - Adds a remote peer to this nodes peer list
 - /peer/<url>   DELETE - Removes a peer from this nodes peer list
 - /peers        GET - Returns the list of this nodes peers
+- /broadcast    POST - Allows a transaction to be broadcast to this node from another peer node
   
 ## Running a single node
  
