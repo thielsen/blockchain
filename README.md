@@ -53,6 +53,7 @@ You can then connect to http://localhost:4000 using postman and the APIs detaile
 - Add SPA front end to control nodes locally and eliminate the need to use Postman
 - Add node autodiscovery so other nodes don't need to be added manually
 - Add increasing hash difficulty
+- Add docstrings
 
 ## Credits
 
