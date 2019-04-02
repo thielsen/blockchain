@@ -41,7 +41,7 @@ def create_app(config=None):
             'peers': blockchain.get_peers()
         }
         return jsonify(response), 201
-    
+
     @app.route('/broadcast', methods=['POST'])
     def broadcast():
         values = request.get_json()
@@ -53,10 +53,10 @@ def create_app(config=None):
             response = {'message': 'Data missing'}
             return jsonify(response), 400
         if blockchain.add_transaction(values['recipient'],
-                                   values['signature'],
-                                   values['sender'],
-                                   values['amount'],
-                                   broadcast=True):
+                                      values['signature'],
+                                      values['sender'],
+                                      values['amount'],
+                                      broadcast=True):
             response = {
                 'message': 'Transaction added',
                 'transaction': {
@@ -73,7 +73,6 @@ def create_app(config=None):
                 'message': 'Transaction failed'
             }
             return jsonify(response), 500
-
 
     @app.route('/peer/<url>', methods=['DELETE'])
     def delete_peer(url):
