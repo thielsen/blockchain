@@ -23,7 +23,7 @@ Each wallet is produced with a public/private key pair. The public key is used a
 
 ## API
 
-- /             GET - Homepage (TODO - build out SPA for managing local node)
+- /             GET - Homepage
 - /blockchain   GET - Returns a json response of the entire blockchain
 - /mine         POST - Mines a block
 - /wallet       POST - Creates new public and private keys
