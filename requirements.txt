@@ -42,5 +42,5 @@ traceback2==1.4.0
 unittest2==1.1.0
 urllib3==1.26.5
 wcwidth==0.1.7
-Werkzeug==0.15.5
+Werkzeug==2.2.3
 zipp==0.5.2
